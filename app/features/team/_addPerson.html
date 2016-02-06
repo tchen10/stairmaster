@@ -1,0 +1,15 @@
+<h2>Add a Person</h2>
+
+<form ng-submit="addPerson()">
+    <div class="form-group">
+        <label for="personFirst">First Name</label>
+        <input type="text" ng-model="person.first" class="form-control" id="personFirst"/>
+    </div>
+
+    <div class="form-group">
+        <label for="personLast">Last Name</label>
+        <input type="text" ng-model="person.last" class="form-control" id="personLast"/>
+    </div>
+
+    <button id="addPersonButton" type="submit" class="btn btn-default">Submit</button>
+</form>

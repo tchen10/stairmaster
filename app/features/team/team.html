@@ -1,0 +1,19 @@
+<div class="col-md-7">
+    <h2>Team</h2>
+    <div class="well">
+        <ul ng-repeat="person in persons" class="person-list list-group">
+            <li class="person list-group-item">
+                {{ person.first }} {{ person.last }}
+                <a ui-sref="team.editPerson" ng-click="editPerson(person.$id)">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </a>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deletePerson(person.$id)"></span>
+            </li>
+        </ul>
+    </div>
+    <button ui-sref="team.addPerson" class="btn btn-primary" id="addPersonForm">Add Person</button>
+</div>
+<div class="col-md-1"></div>
+<div class="col-md-4">
+    <div ui-view></div>
+</div>

@@ -1,0 +1,23 @@
+{
+  "globalstrict": true,
+  "globals": {
+    "angular": false,
+    "describe": false,
+    "it": false,
+    "expect": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "module": false,
+    "inject": false,
+    "require": false,
+    "config": false,
+    "__dirname": false,
+    "exports": false,
+    "console": false,
+    "expect": false,
+    "by": false,
+    "browser": false,
+    "element": false,
+    "MockFirebase": false
+  }
+}
