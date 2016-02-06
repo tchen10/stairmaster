@@ -49,8 +49,8 @@ describe('stairmaster.team module', function() {
 
             beforeEach(function() {
                 scope.persons.$add({
-                    first: 'Po',
-                    last: 'Panda'
+                    first: 'Alexander',
+                    last: 'Hamilton'
                 });
                 scope.$digest();
 
@@ -61,17 +61,21 @@ describe('stairmaster.team module', function() {
                 scope.editPerson(id);
                 scope.$digest();
 
-                expect(scope.persons[0].first).toBe('Po');
+                expect(scope.persons[0].first).toBe('Alexander');
+                expect(scope.persons[0].last).toBe('Hamilton');
             });
 
             it('should update person', function() {
                 scope.editPerson(id);
                 scope.$digest();
 
-                scope.personToUpdate.first = 'Peter';
-                scope.personToUpdate.last = 'Rabbit';
+                scope.personToUpdate.first = 'Aaron';
+                scope.personToUpdate.last = 'Burr';
 
-                expect(scope.persons[0].first).toBe('Peter');
+                scope.updatePerson();
+
+                expect(scope.persons[0].first).toBe('Aaron');
+                expect(scope.persons[0].last).toBe('Burr');
             });
         });
 

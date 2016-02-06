@@ -5,7 +5,7 @@ var Firebase = require('firebase');
 angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
 .controller('TeamCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
-    var ref = new Firebase('https://stairmaster.firebaseio.com/Tasks');
+    var ref = new Firebase('https://stairmaster.firebaseio.com/Persons');
     $scope.persons = $firebaseArray(ref);
 
     $scope.addPerson = function() {
@@ -24,11 +24,20 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
     };
 
     $scope.editPerson = function(id) {
-        $scope.personToUpdate = $scope.persons.$getRecord(id);
+        var person = $scope.persons.$getRecord(id);
+        $scope.personToUpdate = {};
+        $scope.personToUpdate.id = person.$id;
+        $scope.personToUpdate.first = person.first;
+        $scope.personToUpdate.last = person.last;
     };
 
     $scope.updatePerson = function() {
-        $scope.persons.$save($scope.personToUpdate);
+        var person = $scope.persons.$getRecord($scope.personToUpdate.id);
+        person.first = $scope.personToUpdate.first;
+        person.last = $scope.personToUpdate.last;
+        $scope.persons.$save(person).then(function() {
+            $state.go('team');
+        });
     };
 
     $scope.deletePerson = function(id) {
