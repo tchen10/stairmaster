@@ -12,7 +12,8 @@ require('./components');
 var app = angular.module('stairmaster', [
     'ui.router',
     'stairmaster.version',
-    'stairmaster.team'
+    'stairmaster.team',
+    'stairmaster.pairs'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -32,6 +33,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
             url: '/edit',
             templateUrl: 'features/team/_editPerson.html',
             controller: 'TeamCtrl'
+        })
+        .state('pairs', {
+            url: '/pairs',
+            templateUrl: 'features/pairs/pairs.html',
+            controller: 'PairsCtrl'
         });
 
     $urlRouterProvider.otherwise('/team');

@@ -4,14 +4,15 @@ describe('stairmaster.team module', function() {
     beforeEach(module('stairmaster.team'));
 
     describe('team controller', function() {
-        var teamCtrl, scope;
+        var teamCtrl, scope, state;
 
         beforeEach(module('stairmaster.team.team-controller'));
 
         beforeEach(function() {
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
-                teamCtrl = $controller('TeamCtrl', {$scope: scope});
+                state = {};
+                teamCtrl = $controller('TeamCtrl', {$scope: scope, $state: state});
             });
         });
 
@@ -98,9 +99,7 @@ describe('stairmaster.team module', function() {
         });
 
         afterEach(function() {
-            scope.persons.$remove(scope.persons[0]).then(function(ref) {
-                ref.key() === scope.persons[0].$id;
-            });
+            scope.persons.$remove(scope.persons[0]);
         });
 
     });

@@ -4,7 +4,7 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
-.controller('TeamCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
+.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', function($scope, $state, $firebaseArray) {
     var ref = new Firebase('https://stairmaster.firebaseio.com/Persons');
     $scope.persons = $firebaseArray(ref);
 
