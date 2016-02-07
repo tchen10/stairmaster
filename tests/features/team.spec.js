@@ -4,15 +4,23 @@ describe('stairmaster.team module', function() {
     beforeEach(module('stairmaster.team'));
 
     describe('team controller', function() {
-        var teamCtrl, scope, state;
+        var teamCtrl, scope, state, PairsServiceMock;
 
         beforeEach(module('stairmaster.team.team-controller'));
 
         beforeEach(function() {
+            PairsServiceMock ={
+                generatePairs: function(persons) {
+
+                }
+            };
+
+            spyOn(PairsServiceMock, 'generatePairs');
+
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
                 state = {};
-                teamCtrl = $controller('TeamCtrl', {$scope: scope, $state: state});
+                teamCtrl = $controller('TeamCtrl', {$scope: scope, $state: state, PairsService: PairsServiceMock});
             });
         });
 

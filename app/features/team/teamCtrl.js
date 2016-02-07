@@ -4,9 +4,12 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
-.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', function($scope, $state, $firebaseArray) {
-    var ref = new Firebase('https://stairmaster.firebaseio.com/Persons');
-    $scope.persons = $firebaseArray(ref);
+.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', 'PairsService', function($scope, $state, $firebaseArray, PairsService) {
+    var personsRef = new Firebase('https://stairmaster.firebaseio.com/Persons');
+    $scope.persons = $firebaseArray(personsRef);
+    var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
+    $scope.pairs = $firebaseArray(pairsRef);
+
 
     $scope.addPerson = function() {
         $scope.persons.$add({
@@ -14,9 +17,7 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
             last: $scope.person.last,
             timestamp: Firebase.ServerValue.TIMESTAMP
         }).then(function(ref) {
-            // Add success message
-        }, function(error) {
-            // Add error message
+            PairsService.generatePairs($scope.persons);
         });
 
         $scope.person.first = '';
@@ -42,6 +43,7 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
     $scope.deletePerson = function(id) {
         $scope.persons.$remove($scope.persons.$getRecord(id));
+        PairsService.generatePairs($scope.persons);
     };
 
 }]);

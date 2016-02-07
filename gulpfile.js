@@ -13,6 +13,7 @@ var runSequence = require('run-sequence');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('connect', function() {
     connect.server({
@@ -62,6 +63,7 @@ gulp.task('browserify', function() {
     return browserify('app/app.js')
         .bundle()
         .pipe(source('bundle.js'))
+        .pipe(buffer())
         .pipe(gulp.dest('app/'));
 });
 
