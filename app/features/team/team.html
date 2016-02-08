@@ -16,8 +16,8 @@
 
     <h3>Pairs</h3>
     <div class="well">
-        <ul ng-repeat="pair in pairs" class="pairs-list">
-            <li class="pairs">
+        <ul ng-repeat="pair in pairs | orderBy: '-person1.id': true" class="pairs-list">
+            <li class="pair">
                 {{ pair.person1.person.first }} + {{ pair.person2.person.first }}
             </li>
         </ul>

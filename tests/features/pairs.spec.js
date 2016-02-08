@@ -22,51 +22,91 @@ describe('stairmaster.pairs module', function() {
     describe('pairs service', function() {
         var pairsService;
 
-         beforeEach(function() {
+        beforeEach(function() {
             module('stairmaster.pairs.pairs-service');
             inject(function(_PairsService_) {
                 pairsService = _PairsService_;
             });
         });
 
-        xit('should generate unique pairs of persons', function() {
-            var persons = {'A':'Alexander', 'B':'Burr', 'C':'Candy'};
+        it('should add pairs of persons to the database when pairs are unique', function() {
+            var pairs = {};
 
-            var pairs = pairsService.generatePairs(persons);
+            var persons = [0, 1, 2];
 
-            expect(pairs.length).toBe(3);
+            spyOn(pairsService, '_addToDatabase');
+            spyOn(pairsService, '_isUniquePair').and.returnValue(true);
+
+            var newPairs = pairsService.generatePairs(pairs, persons);
+
+            expect(pairsService._addToDatabase).toHaveBeenCalledWith(pairs, persons[0], persons[1]);
+            expect(pairsService._addToDatabase).toHaveBeenCalledWith(pairs, persons[0], persons[2]);
+            expect(pairsService._addToDatabase).toHaveBeenCalledWith(pairs, persons[1], persons[2]);
         });
 
-        xit('should return true when pair is unique', function() {
+        it('should not add pairs of persons to the database when pairs are not unique', function() {
+            var pairs = {};
+
+            var persons = [0, 1, 2];
+
+            spyOn(pairsService, '_addToDatabase');
+            spyOn(pairsService, '_isUniquePair').and.returnValue(false);
+
+            var newPairs = pairsService.generatePairs(pairs, persons);
+
+            expect(pairsService._addToDatabase).not.toHaveBeenCalled();
+        });
+
+        it('should add pairs to database', function() {
+            var pairs = {
+                $add: function() {}
+            };
+
+            var person1 = { $id: 'monkey'};
+            var person2 = { $id: 'tiger'};
+
+            spyOn(pairs, '$add');
+
+            pairsService._addToDatabase(pairs, person1, person2);
+
+            expect(pairs.$add).toHaveBeenCalledWith({
+                person1: {
+                    id: 'monkey',
+                    person: { $id: 'monkey' }
+                },
+                person2: {
+                    id: 'tiger',
+                    person: { $id: 'tiger' }
+                }
+            });
+        });
+
+        it('should return true when pair is unique', function() {
             var pairs = {
                 'pair1' : {
-                    person1 : 'Alexander',
-                    person2: 'Aaron'
+                    person1: { id: 'person1Id' },
+                    person2: { id: 'person2Id' }
                 }
             };
 
-            var person1 = 'Alexander';
-            var person2 = 'Lafayette';
+            var person1 = { $id: 'person1Id' };
+            var person3 = { $id: 'person3Id' };
 
-            var isUnique = pairsService._isUniquePair(pairs, person1, person2);
+            var isUnique = pairsService._isUniquePair(pairs, person1, person3);
 
             expect(isUnique).toBe(true);
         });
 
-        xit('should return false when a pair is duplicated', function() {
+        it('should return false when a pair is duplicated', function() {
             var pairs = {
                 'pair1' : {
-                    person1: {
-                        id: 'person1Id'
-                    },
-                    person2: {
-                        id: 'person2Id'
-                    }
+                    person1: { id: 'person1Id' },
+                    person2: { id: 'person2Id' }
                 }
             };
 
-            var person1 = { id: 'person1Id' };
-            var person2 = { id: 'person2Id' };
+            var person1 = { $id: 'person1Id' };
+            var person2 = { $id: 'person2Id' };
 
             var isUnique = pairsService._isUniquePair(pairs, person1, person2);
 

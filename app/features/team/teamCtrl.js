@@ -17,7 +17,7 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
             last: $scope.person.last,
             timestamp: Firebase.ServerValue.TIMESTAMP
         }).then(function(ref) {
-            PairsService.generatePairs($scope.persons);
+            PairsService.generatePairs($scope.pairs, $scope.persons);
         });
 
         $scope.person.first = '';
