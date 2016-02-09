@@ -26,6 +26,22 @@ gulp prod
 
 and navigate to http://localhost:9999/
 
+## Setting up seed data
+
+Retrieve data from firebase and store in seed.json
+
+```
+firebase data:get / > seed.json -f stairmaster
+firebase data:get /pairs > pairs.json -f stairmaster
+```
+
+Set data from seed.json
+
+```
+firebase data:set / seed.json -f stairmaster
+firebase data:set /pairs pairs.json -f stairmaster
+```
+
 ## Testing
 
 
