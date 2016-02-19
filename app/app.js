@@ -18,29 +18,30 @@ var app = angular.module('stairmaster', [
 
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
-    $stateProvider
-        .state('team', {
-            url: '/team',
-            templateUrl: 'features/team/team.html',
-            controller: 'TeamCtrl'
-        })
-        .state('team.addPerson', {
-            url: '/add',
-            templateUrl: 'features/team/_addPerson.html',
-            controller: 'TeamCtrl'
-        })
-        .state('team.editPerson', {
-            url: '/edit',
-            templateUrl: 'features/team/_editPerson.html',
-            controller: 'TeamCtrl'
-        })
-        .state('pairs', {
-            url: '/pairs',
-            templateUrl: 'features/pairs/pairs.html',
-            controller: 'PairsCtrl'
-        });
+        $stateProvider
+            .state('team', {
+                url: '/settings',
+                templateUrl: 'features/team/team.html',
+                controller: 'TeamCtrl'
+            })
+            .state('team.addPerson', {
+                url: '/add',
+                templateUrl: 'features/team/_addPerson.html',
+                controller: 'TeamCtrl'
+            })
+            .state('team.editPerson', {
+                url: '/edit',
+                templateUrl: 'features/team/_editPerson.html',
+                controller: 'TeamCtrl'
+            })
+            .state('pairs', {
+                url: '/pairstairs',
+                templateUrl: 'features/pairs/pairs.html',
+                controller: 'PairsCtrl'
+            });
 
-    $urlRouterProvider.otherwise('/team');
-}]);
+        $urlRouterProvider.otherwise('/settings');
+    }
+]);
 
 app.constant('FirebaseUrl', 'https://stairmaster.firebaseio.com/');

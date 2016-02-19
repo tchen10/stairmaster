@@ -1,3 +1,16 @@
-/* app css stylesheet */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td {
+    padding: 10px;
+}
 
+.stair-row .stair-name {
+    font-weight: 600;
+}
+
+.stair-row .stair-pair {
+    border: 1px solid black;
+}

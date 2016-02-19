@@ -1,3 +1,11 @@
 <h2>Pairs</h2>
-
-
+<table id="stairs">
+    <tbody>
+        <tr class="stair-row" ng-repeat="person in persons | reverse">
+            <td class="stair-pair" ng-repeat="stair in person.stairs | reverse">
+                {{ stair.person1.person.first}} + {{ stair.person2.person.first}}
+            </td>
+            <td class="stair-name">{{ person.first }}</td>
+        </tr>
+    </tbody>
+</table>

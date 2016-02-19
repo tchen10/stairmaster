@@ -10,6 +10,11 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
     var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
     $scope.pairs = $firebaseArray(pairsRef);
 
+    pairsRef.on('child_added', function(snapshot) {
+        var pairKey = snapshot.key();
+
+    });
+
 
     $scope.addPerson = function() {
         $scope.persons.$add({
