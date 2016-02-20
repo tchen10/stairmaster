@@ -8,6 +8,15 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
     var personsRef = new Firebase('https://stairmaster.firebaseio.com/Persons');
     var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
 
+    pairsRef.on('child_added', function(snapshot) {
+        var pair = snapshot.val();
+        var person1Id = pair.person1.id;
+        var person2Id = pair.person2.id;
+        personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
+        personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
+        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set(pair);
+    });
+
     return {
         generatePairs: function(pairs, persons) {
             var that = this;
@@ -28,7 +37,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var person1Id = person1.$id;
             var person2Id = person2.$id;
 
-            var pair = {
+            pairs.$add({
                 person1: {
                     id: person1Id,
                     person: {
@@ -42,22 +51,9 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
                         first: person2.first,
                         last: person2.last
                     }
-                }
-            };
-
-            pairs.$add(pair).then(function(ref) {
-                that._addPairToStair(person1Id, ref.key(), pair);
-                that._addPairToPerson(person1Id, ref.key(), pair);
-                that._addPairToPerson(person2Id, ref.key(), pair);
+                },
+                days: 0
             });
-        },
-
-        _addPairToPerson: function(personId, pairId, pair) {
-            personsRef.child(personId + '/pairs/' + pairId).set(pair);
-        },
-
-        _addPairToStair: function(personId, pairId, pair) {
-            personsRef.child(personId + '/stairs/' + pairId).set(pair);
         },
 
         _isUniquePair: function(pairs, person1, person2) {
