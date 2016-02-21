@@ -3,7 +3,9 @@
     <tbody>
         <tr class="stair-row" ng-repeat="person in persons | reverse">
             <td class="stair-pair" ng-repeat="stair in person.stairs | reverse">
-                {{ stair.person1.person.first}} + {{ stair.person2.person.first}}
+                <span class="increment-days change-days-icon glyphicon glyphicon-chevron-up" ng-click="incrementDays(stair.id)"></span>
+                <span class="pairing-days">{{ getPairingDays(stair.id) }}</span>
+                <span class="decrement-days change-days-icon glyphicon glyphicon-chevron-down" ng-click="decrementDays(stair.id)"></span>
             </td>
             <td class="stair-name">{{ person.first }}</td>
         </tr>

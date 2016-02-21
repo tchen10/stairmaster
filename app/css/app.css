@@ -13,4 +13,22 @@ td {
 
 .stair-row .stair-pair {
     border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.increment-days {
+    visibility: hidden;
+    float: right;
+    cursor: pointer;
+}
+
+.decrement-days {
+    visibility: hidden;
+    float: left;
+    cursor: pointer;
+}
+
+.stair-pair:hover .change-days-icon {
+    visibility: visible;
 }

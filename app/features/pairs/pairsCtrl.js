@@ -10,6 +10,24 @@ angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
     var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
     var pairs = $firebaseArray(pairsRef);
 
+    $scope.incrementDays = function(id) {
+        var pair = pairs.$getRecord(id);
+        pair.days += 1;
+        pairs.$save(pair);
+    };
+
+    $scope.decrementDays = function(id) {
+        var pair = pairs.$getRecord(id);
+        if (pair.days !== 0) {
+            pair.days -= 1;
+            pairs.$save(pair);
+        }
+    };
+
+    $scope.getPairingDays = function(id) {
+        var pair = pairs.$getRecord(id);
+        return pair.days;
+    };
 }])
 
 .filter('reverse', function() {

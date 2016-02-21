@@ -74,6 +74,7 @@ describe('stairmaster', function() {
 
         it('should create pair stairs', function() {
             var pairStairTab = element.all(by.css('[ui-sref="pairs"]')).last();
+
             pairStairTab.click();
             expect(element.all(by.css('[ui-view] h2')).first().getText()).
             toMatch(/Pairs/);

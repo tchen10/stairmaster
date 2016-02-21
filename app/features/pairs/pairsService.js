@@ -14,7 +14,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
         var person2Id = pair.person2.id;
         personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
         personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set(pair);
+        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set({ id: snapshot.key() });
     });
 
     return {

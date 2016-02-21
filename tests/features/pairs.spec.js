@@ -18,7 +18,6 @@ describe('stairmaster.pairs module', function() {
         it('should create persons array in scope', function() {
             expect(Object.prototype.toString.call(scope.persons)).toBe('[object Array]');
         });
-
     });
 
     describe('pairs service', function() {
