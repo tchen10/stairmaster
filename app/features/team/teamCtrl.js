@@ -14,6 +14,7 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
         $scope.persons.$add({
             first: $scope.person.first,
             last: $scope.person.last,
+            active: true,
             timestamp: Firebase.ServerValue.TIMESTAMP
         }).then(function(ref) {
             PairsService.generatePairs($scope.pairs, $scope.persons);
@@ -29,6 +30,7 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
         $scope.personToUpdate.id = person.$id;
         $scope.personToUpdate.first = person.first;
         $scope.personToUpdate.last = person.last;
+        $scope.personToUpdate.active = person.active;
     };
 
     $scope.updatePerson = function() {
@@ -40,9 +42,17 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
         });
     };
 
-    $scope.deletePerson = function(id) {
-        $scope.persons.$remove($scope.persons.$getRecord(id));
-        PairsService.generatePairs($scope.persons);
+    $scope.deletePerson = function() {
+        var person = $scope.persons.$getRecord($scope.personToUpdate.id);
+        $scope.persons.$remove(person);
+    };
+
+    $scope.deactivatePerson = function(active) {
+        var person = $scope.persons.$getRecord($scope.personToUpdate.id);
+        active ? person.active = false : person.active = true;
+        $scope.persons.$save(person).then(function() {
+            $state.go('team');
+        });
     };
 
 }]);

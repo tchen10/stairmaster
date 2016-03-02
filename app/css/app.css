@@ -7,6 +7,19 @@ td {
     padding: 10px;
 }
 
+.person-list .person:hover .editPersonButton {
+    visibility: visible;
+}
+
+.person-list .editPersonButton {
+    visibility: hidden;
+}
+
+.deleteButtonPanel {
+    text-align: right;
+    margin-top: 20px;
+}
+
 .stair-row .stair-name {
     font-weight: 600;
 }
