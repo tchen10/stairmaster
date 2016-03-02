@@ -1,8 +1,16 @@
 <div class="col-md-7">
     <h3>Team Members</h3>
     <div class="well">
-        <ul class="person-list">
-            <li ng-repeat="person in persons" class="person">
+        <ul class="person-list active">
+            <li ng-repeat="person in persons | filter: { active: true }" class="person">
+                {{ person.first }} {{ person.last }}
+                <a class="editPersonButton" ui-sref="team.editPerson" ng-click="editPerson(person.$id)">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+        <ul class="person-list inactive">
+            <li ng-repeat="person in persons | filter: { active: false }" class="person">
                 {{ person.first }} {{ person.last }}
                 <a class="editPersonButton" ui-sref="team.editPerson" ng-click="editPerson(person.$id)">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -11,10 +19,9 @@
         </ul>
         <button ui-sref="team.addPerson" class="btn btn-primary" id="addPersonForm">Add Person</button>
     </div>
-
     <h3>Pairs</h3>
     <div class="well">
-        <ul class="pairs-list">
+        <ul class="pairs-list active">
             <li ng-repeat="pair in pairs | orderBy: '-person1.id': true" class="pair">
                 {{ pair.person1.person.first }} + {{ pair.person2.person.first }}
             </li>

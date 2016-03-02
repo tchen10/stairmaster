@@ -7,6 +7,11 @@ td {
     padding: 10px;
 }
 
+.inactive li {
+    font-style: italic;
+    color: #A9A9A9;
+}
+
 .person-list .person:hover .editPersonButton {
     visibility: visible;
 }

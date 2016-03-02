@@ -52,7 +52,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
                         last: person2.last
                     }
                 },
-                days: 0
+                days: 0,
+                active: true
             });
         },
 
