@@ -49,8 +49,9 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
     $scope.deactivatePerson = function(active) {
         var person = $scope.persons.$getRecord($scope.personToUpdate.id);
-        active ? person.active = false : person.active = true;
+        person.active = !active;
         $scope.persons.$save(person).then(function() {
+            PairsService.updatePairStatus(active, person);
             $state.go('team');
         });
     };

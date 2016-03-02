@@ -7,6 +7,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
 .service('PairsService', ['$firebaseArray', function($firebaseArray) {
     var personsRef = new Firebase('https://stairmaster.firebaseio.com/Persons');
     var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
+    var pairs = $firebaseArray(pairsRef);
+    var persons = $firebaseArray(personsRef);
 
     pairsRef.on('child_added', function(snapshot) {
         var pair = snapshot.val();
@@ -14,10 +16,26 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
         var person2Id = pair.person2.id;
         personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
         personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set({ id: snapshot.key() });
+        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set({ id: snapshot.key(), active: true });
     });
 
     return {
+        updatePairStatus: function(active, person) {
+            var that = this;
+            var pairsToUpdate = person.pairs;
+            angular.forEach(pairsToUpdate, function(pair, key) {
+                var pairToUpdate = pairs.$getRecord(key);
+                var person1 = persons.$getRecord(pair.person1.id);
+                var person2 = persons.$getRecord(pair.person2.id);
+                if (!active) {
+                    pairToUpdate.active = that._setPairStatus(person1, person2);
+                } else {
+                    pairToUpdate.active = false;
+                }
+                pairs.$save(pairToUpdate);
+            });
+        },
+
         generatePairs: function(pairs, persons) {
             var that = this;
             var i, j;
@@ -36,6 +54,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var that = this;
             var person1Id = person1.$id;
             var person2Id = person2.$id;
+            var active = that._setPairStatus(person1, person2);
 
             pairs.$add({
                 person1: {
@@ -53,7 +72,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
                     }
                 },
                 days: 0,
-                active: true
+                active: active
             });
         },
 
@@ -70,6 +89,14 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             });
 
             return isUnique;
+        },
+
+        _setPairStatus: function(person1, person2) {
+            if (person1.active && person2.active) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 }]);
