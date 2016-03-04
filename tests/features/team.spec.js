@@ -89,16 +89,23 @@ describe('stairmaster.team module', function() {
         });
 
         describe('deletePerson', function() {
-            it('should delete person', function() {
+            var id;
+
+            beforeEach(function() {
                 scope.persons.$add({
                     first: 'Po',
                     last: 'Panda'
                 });
                 scope.$digest();
 
-                var id = scope.persons[0].$id;
+                id = scope.persons[0].$id;
+            });
 
-                scope.deletePerson(id);
+            it('should delete person', function() {
+                scope.personToUpdate = {};
+                scope.personToUpdate.id = id;
+
+                scope.deletePerson();
                 scope.$digest();
 
                 expect(scope.persons.length).toBe(0);

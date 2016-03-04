@@ -116,6 +116,19 @@ gulp.task('protractor', function (callback) {
         .on('end', callback);
 });
 
+gulp.task('protractor-debug', function (callback) {
+    gulp.src('tests-e2e/*.spec.js')
+        .pipe(angularProtractor({
+            'configFile': 'tests-e2e/protractor.conf.js',
+            'debug': true,
+            'autoStartStopServer': true
+        }))
+        .on('error', function(e) {
+            gutil.log(e);
+        })
+        .on('end', callback);
+});
+
 // run all tests
 gulp.task('test', function() {
     runSequence(

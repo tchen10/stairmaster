@@ -12,11 +12,6 @@ describe('stairmaster', function() {
             browser.get('index.html#/settings');
         });
 
-        it('should render settings view when user navigates to /settings', function() {
-            expect(element.all(by.css('[ui-view] h2')).first().getText()).
-            toMatch(/Team/);
-        });
-
         it('should create, update, edit, delete a person', function() {
             var personList = element.all(by.repeater('person in persons'));
             var editButton = element.all(by.css('[ui-sref="team.editPerson"]')).last();
@@ -33,20 +28,21 @@ describe('stairmaster', function() {
             expect(person.getText()).toEqual('Alexander Hamilton');
 
             // cancel edit
-            editButton.click();
+            browser.executeScript("arguments[0].click();", editButton.getWebElement());
             element(by.model('personToUpdate.first')).clear().sendKeys('Aaron');
             element(by.model('personToUpdate.last')).clear().sendKeys('Burr');
             element(by.id('cancelEditPersonButton')).click();
             expect(person.getText()).toEqual('Alexander Hamilton');
 
             // edit
-            editButton.click();
+            browser.executeScript("arguments[0].click();", editButton.getWebElement());
             element(by.model('personToUpdate.first')).clear().sendKeys('Aaron');
             element(by.model('personToUpdate.last')).clear().sendKeys('Burr');
             element(by.id('editPersonButton')).click();
             expect(person.getText()).toEqual('Aaron Burr');
 
             // delete
+            browser.executeScript("arguments[0].click();", editButton.getWebElement());
             deleteButton.click();
             expect(personList.count()).toEqual(0);
         });
@@ -70,11 +66,11 @@ describe('stairmaster', function() {
             element(by.model('person.first')).sendKeys('Thomas');
             element(by.model('person.last')).sendKeys('Jefferson');
             element(by.id('addPersonButton')).click();
+
         });
 
         it('should create pair stairs', function() {
             var pairStairTab = element.all(by.css('[ui-sref="pairs"]')).last();
-
             pairStairTab.click();
             expect(element.all(by.css('[ui-view] h2')).first().getText()).
             toMatch(/Pairs/);

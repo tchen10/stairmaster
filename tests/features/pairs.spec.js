@@ -108,7 +108,8 @@ describe('stairmaster.pairs module', function() {
                             last: 'lastTiger'
                         }
                     },
-                    days: 0
+                    days: 0,
+                    active: false
                 });
             });
         });
