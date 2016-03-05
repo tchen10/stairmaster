@@ -4,35 +4,24 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
 
-.service('PairsService', ['$firebaseArray', function($firebaseArray) {
-    var personsRef = new Firebase('https://stairmaster.firebaseio.com/Persons');
-    var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
-    var pairs = $firebaseArray(pairsRef);
-    var persons = $firebaseArray(personsRef);
-
-    pairsRef.on('child_added', function(snapshot) {
-        var pair = snapshot.val();
-        var person1Id = pair.person1.id;
-        var person2Id = pair.person2.id;
-        personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set({ id: snapshot.key(), active: true });
-    });
+.service('PairsService', ['$firebaseArray', 'FirebaseService', function($firebaseArray, FirebaseService) {
+    var persons = FirebaseService.getFirebaseArray('Persons');
+    var pairs = FirebaseService.getFirebaseArray('Pairs');
 
     return {
         updatePairStatus: function(active, person) {
             var that = this;
             var pairsToUpdate = person.pairs;
             angular.forEach(pairsToUpdate, function(pair, key) {
-                var pairToUpdate = pairs.$getRecord(key);
-                var person1 = persons.$getRecord(pair.person1.id);
-                var person2 = persons.$getRecord(pair.person2.id);
+                var pairToUpdate = FirebaseService.getRecord(pairs, key);
+                var person1 = FirebaseService.getRecord(persons, pair.person1.id);
+                var person2 = FirebaseService.getRecord(persons, pair.person2.id);
                 if (!active) {
                     pairToUpdate.active = that._setPairStatus(person1, person2);
                 } else {
                     pairToUpdate.active = false;
                 }
-                pairs.$save(pairToUpdate);
+                FirebaseService.save(pairs, pairToUpdate);
             });
         },
 
@@ -41,7 +30,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var i, j;
             for (i = 0; i < persons.length; i++) {
                 for (j = i + 1; j < persons.length; j++) {
-                    if (that._isUniquePair(pairs, persons[i], persons[j])) {
+                    if (that._isUniquePair(pairs, FirebaseService.getFirebaseId(persons[i]), FirebaseService.getFirebaseId(persons[j]))) {
                         that._addPairToDatabase(pairs, persons[i], persons[j]);
                     }
                 }
@@ -52,11 +41,11 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
 
         _addPairToDatabase: function(pairs, person1, person2) {
             var that = this;
-            var person1Id = person1.$id;
-            var person2Id = person2.$id;
+            var person1Id = FirebaseService.getFirebaseId(person1);
+            var person2Id = FirebaseService.getFirebaseId(person2);
             var active = that._setPairStatus(person1, person2);
 
-            pairs.$add({
+            var pair = {
                 person1: {
                     id: person1Id,
                     person: {
@@ -73,12 +62,12 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
                 },
                 days: 0,
                 active: active
-            });
+            };
+
+            FirebaseService.add(pairs, pair);
         },
 
-        _isUniquePair: function(pairs, person1, person2) {
-            var person1Id = person1.$id;
-            var person2Id = person2.$id;
+        _isUniquePair: function(pairs, person1Id, person2Id) {
             var isUnique = true;
 
             angular.forEach(pairs, function(pair) {

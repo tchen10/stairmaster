@@ -4,33 +4,186 @@ describe('stairmaster.pairs module', function() {
     beforeEach(module('stairmaster.pairs'));
 
     describe('pairs controller', function() {
-        var pairsCtrl, scope, mockPairsService, mockFirebaseArray;
+        var pairsCtrl, scope, FirebaseServiceMock;
 
         beforeEach(function() {
+
+            FirebaseServiceMock = {
+                getFirebaseArray: function() {},
+                getRecord: function() {},
+                save: function() {}
+            };
+
             module('stairmaster.pairs.pairs-controller');
-            inject(function($controller, $rootScope, _PairsService_) {
-                mockPairsService = _PairsService_;
+            inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
-                pairsCtrl = $controller('PairsCtrl', { $scope: scope, PairsService: mockPairsService });
+                pairsCtrl = $controller('PairsCtrl', { $scope: scope, FirebaseService: FirebaseServiceMock });
+            });
+
+            scope.pairs = [];
+        });
+
+        describe('.incrementDays', function() {
+
+            it('should increment days', function() {
+                var pair = { days: 3 };
+                var id = 12;
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
+                spyOn(FirebaseServiceMock, 'save');
+
+                scope.incrementDays(id);
+
+                expect(pair.days).toBe(4);
+                expect(FirebaseServiceMock.save).toHaveBeenCalledWith(scope.pairs, pair);
+            });
+
+        });
+
+        describe('.decrementDays', function() {
+
+            it('should decrement days when days are greater than 0', function() {
+                var pair = { days: 3 };
+                var id = 12;
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
+                spyOn(FirebaseServiceMock, 'save');
+
+                scope.decrementDays(id);
+
+                expect(pair.days).toBe(2);
+                expect(FirebaseServiceMock.save).toHaveBeenCalledWith(scope.pairs, pair);
+            });
+
+            it('should keep days at 0 when there are 0 days', function() {
+                var pair = { days: 0 };
+                var id = 12;
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
+                spyOn(FirebaseServiceMock, 'save');
+
+                scope.decrementDays(id);
+
+                expect(pair.days).toBe(0);
             });
         });
 
-        it('should create persons array in scope', function() {
-            expect(Object.prototype.toString.call(scope.persons)).toBe('[object Array]');
-        });
     });
 
     describe('pairs service', function() {
-        var pairsService;
+        var pairsService, firebaseServiceMock, pairsRef;
 
         beforeEach(function() {
+            firebaseServiceMock = {
+                getFirebaseArray: function() {},
+                getFirebaseId: function() {},
+                getRecord: function() {},
+                save: function() {},
+                add: function() {}
+            };
+
             module('stairmaster.pairs.pairs-service');
+            module(function($provide) {
+                $provide.value('FirebaseService', firebaseServiceMock);
+            });
+
             inject(function(_PairsService_) {
                 pairsService = _PairsService_;
             });
         });
 
-        describe('generatePairs', function() {
+        describe('.updatePairStatus', function() {
+            var pairs, person, pairToUpdate, person1, person2;
+
+            beforeEach(function() {
+
+                person1 = { id: 'person1Id' };
+                person2 = { id: 'person2Id' };
+
+                person = {
+                    pairs: {
+                        pairkey: {
+                            person1: person1,
+                            person2: person2
+                        }
+                    }
+                };
+
+                pairToUpdate = {};
+                spyOn(firebaseServiceMock, 'getRecord').and.returnValues(pairToUpdate, person1, person2);
+                spyOn(firebaseServiceMock, 'save');
+            });
+
+            it('should update pair to inactive when pair was previously active', function() {
+                pairsService.updatePairStatus(true, person);
+                expect(pairToUpdate.active).toBe(false);
+                expect(firebaseServiceMock.save).toHaveBeenCalled();
+            });
+
+            it('should set pair status based on each person when pair was previous inactive', function() {
+                spyOn(pairsService, '_setPairStatus');
+                pairsService.updatePairStatus(false, person);
+                expect(pairsService._setPairStatus).toHaveBeenCalledWith(person1, person2);
+                expect(firebaseServiceMock.save).toHaveBeenCalled();
+            });
+
+        });
+
+        describe('._setPairStatus', function() {
+            var person1, person2;
+
+            it('should return false if both persons are inactive', function() {
+                person1 = { active: false };
+                person2 = { active: false };
+
+                var status = pairsService._setPairStatus(person1, person2);
+
+                expect(status).toBe(false);
+            });
+
+            it('should return false if only one person is inactive', function() {
+                person1 = { active: true };
+                person2 = { active: false };
+
+                var status = pairsService._setPairStatus(person1, person2);
+
+                expect(status).toBe(false);
+            });
+
+            it('should return true if both persons are active', function() {
+                person1 = { active: true };
+                person2 = { active: true };
+
+                var status = pairsService._setPairStatus(person1, person2);
+
+                expect(status).toBe(true);
+            });
+        });
+
+        describe('.generatePairs', function() {
+
+            it('should get id for each person', function() {
+                var pairs = {};
+
+                var persons = [0, 1, 2];
+
+                spyOn(pairsService, '_isUniquePair');
+                spyOn(firebaseServiceMock, 'getFirebaseId');
+
+                var newPairs = pairsService.generatePairs(pairs, persons);
+
+                expect(firebaseServiceMock.getFirebaseId).toHaveBeenCalledWith(persons[0]);
+                expect(firebaseServiceMock.getFirebaseId).toHaveBeenCalledWith(persons[1]);
+                expect(firebaseServiceMock.getFirebaseId).toHaveBeenCalledWith(persons[2]);
+            });
+
+            it('should determine if every pair is unique', function() {
+                var pairs = {};
+                var persons = [0, 1, 2];
+                spyOn(pairsService, '_isUniquePair');
+
+                var newPairs = pairsService.generatePairs(pairs, persons);
+
+                expect(pairsService._isUniquePair.calls.count()).toEqual(3);
+            });
+
 
             it('should add pairs of persons to the database when pairs are unique', function() {
                 var pairs = {};
@@ -62,38 +215,33 @@ describe('stairmaster.pairs module', function() {
 
         });
 
-        describe('_addPairToDatabase', function() {
-            var pairs;
+        describe('._addPairToDatabase', function() {
+            var pairs, person1, person2;
 
             beforeEach(function() {
-                pairs = {
-                    $add: function() {
-                        return {
-                            then: function(ref) {
-                                return ref;
-                            }
-                        };
-                    }
-                };
+                pairs = {};
 
-                var person1 = {
-                    $id: 'monkey',
+                person1 = {
                     first: 'firstMonkey',
                     last: 'lastMonkey'
                 };
-                var person2 = {
-                    $id: 'tiger',
+                person2 = {
                     first: 'firstTiger',
                     last: 'lastTiger'
                 };
 
-                spyOn(pairs, '$add').and.callThrough();
-
+                spyOn(firebaseServiceMock, 'add');
+                spyOn(firebaseServiceMock, 'getFirebaseId').and.returnValues('monkey', 'tiger');
+                spyOn(pairsService, '_setPairStatus').and.returnValue(true);
                 pairsService._addPairToDatabase(pairs, person1, person2);
             });
 
+            it('should set pair status when adding pair to database', function() {
+                expect(pairsService._setPairStatus).toHaveBeenCalledWith(person1, person2);
+            });
+
             it('should add pairs to database', function() {
-                expect(pairs.$add).toHaveBeenCalledWith({
+                expect(firebaseServiceMock.add).toHaveBeenCalledWith(pairs, {
                     person1: {
                         id: 'monkey',
                         person: {
@@ -109,41 +257,39 @@ describe('stairmaster.pairs module', function() {
                         }
                     },
                     days: 0,
-                    active: false
+                    active: true
                 });
+
             });
         });
 
-        it('should return true when pair is unique', function() {
-            var pairs = {
-                'pair1': {
-                    person1: { id: 'person1Id' },
-                    person2: { id: 'person2Id' }
-                }
-            };
+        describe('._isUniquePair', function() {
+            it('should return true when pair is unique', function() {
+                var pairs = {
+                    'pair1': {
+                        person1: { id: 'person1Id' },
+                        person2: { id: 'person2Id' }
+                    }
+                };
 
-            var person1 = { $id: 'person1Id' };
-            var person3 = { $id: 'person3Id' };
+                var isUnique = pairsService._isUniquePair(pairs, 'person1Id', 'person3Id');
 
-            var isUnique = pairsService._isUniquePair(pairs, person1, person3);
+                expect(isUnique).toBe(true);
+            });
 
-            expect(isUnique).toBe(true);
+            it('should return false when a pair is duplicated', function() {
+                var pairs = {
+                    'pair1': {
+                        person1: { id: 'person1Id' },
+                        person2: { id: 'person2Id' }
+                    }
+                };
+
+                var isUnique = pairsService._isUniquePair(pairs, 'person1Id', 'person2Id');
+
+                expect(isUnique).toBe(false);
+            });
         });
 
-        it('should return false when a pair is duplicated', function() {
-            var pairs = {
-                'pair1': {
-                    person1: { id: 'person1Id' },
-                    person2: { id: 'person2Id' }
-                }
-            };
-
-            var person1 = { $id: 'person1Id' };
-            var person2 = { $id: 'person2Id' };
-
-            var isUnique = pairsService._isUniquePair(pairs, person1, person2);
-
-            expect(isUnique).toBe(false);
-        });
     });
 });

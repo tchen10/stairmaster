@@ -4,28 +4,26 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
 
-.controller('PairsCtrl', ['$scope', '$firebaseArray', 'PairsService', function($scope, $firebaseArray, PairsService) {
-    var personsRef = new Firebase('https://stairmaster.firebaseio.com/Persons');
-    $scope.persons = $firebaseArray(personsRef);
-    var pairsRef = new Firebase('https://stairmaster.firebaseio.com/Pairs');
-    var pairs = $firebaseArray(pairsRef);
+.controller('PairsCtrl', ['$scope', '$firebaseArray', 'FirebaseService', function($scope, $firebaseArray, FirebaseService) {
+    $scope.persons = FirebaseService.getFirebaseArray('Persons');
+    $scope.pairs = FirebaseService.getFirebaseArray('Pairs');
 
     $scope.incrementDays = function(id) {
-        var pair = pairs.$getRecord(id);
+        var pair = FirebaseService.getRecord($scope.pairs, id);
         pair.days += 1;
-        pairs.$save(pair);
+        FirebaseService.save($scope.pairs, pair);
     };
 
     $scope.decrementDays = function(id) {
-        var pair = pairs.$getRecord(id);
+        var pair = FirebaseService.getRecord($scope.pairs, id);
         if (pair.days !== 0) {
             pair.days -= 1;
-            pairs.$save(pair);
+            FirebaseService.save($scope.pairs, pair);
         }
     };
 
     $scope.getPairingDays = function(id) {
-        var pair = pairs.$getRecord(id);
+        var pair = FirebaseService.getRecord($scope.pairs, id);
         return pair.days;
     };
 }])

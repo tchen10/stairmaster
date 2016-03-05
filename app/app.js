@@ -13,7 +13,8 @@ var app = angular.module('stairmaster', [
     'ui.router',
     'stairmaster.version',
     'stairmaster.team',
-    'stairmaster.pairs'
+    'stairmaster.pairs',
+    'stairmaster.firebase'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -34,7 +35,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 templateUrl: 'features/team/_editPerson.html',
                 controller: 'TeamCtrl'
             })
-            .state('pairs', {
+            .state('pairstairs', {
                 url: '/pairstairs',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl'
