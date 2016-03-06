@@ -12,9 +12,10 @@ require('./components');
 var app = angular.module('stairmaster', [
     'ui.router',
     'stairmaster.version',
+    'stairmaster.firebase',
     'stairmaster.team',
     'stairmaster.pairs',
-    'stairmaster.firebase'
+    'stairmaster.stairs'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
