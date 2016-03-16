@@ -1,10 +1,36 @@
-table {
+.stair-table {
     border-collapse: collapse;
     width: 100%;
 }
 
-td {
+.stair-table td {
     padding: 10px;
+}
+
+.stair-row .stair-name {
+    font-weight: 600;
+}
+
+.stair-row .stair-pair {
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.stair-pair:hover .change-days-icon {
+    visibility: visible;
+}
+
+.increment-days {
+    visibility: hidden;
+    float: right;
+    cursor: pointer;
+}
+
+.decrement-days {
+    visibility: hidden;
+    float: left;
+    cursor: pointer;
 }
 
 .inactive li {
@@ -23,30 +49,4 @@ td {
 .deleteButtonPanel {
     text-align: right;
     margin-top: 20px;
-}
-
-.stair-row .stair-name {
-    font-weight: 600;
-}
-
-.stair-row .stair-pair {
-    border: 1px solid black;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.increment-days {
-    visibility: hidden;
-    float: right;
-    cursor: pointer;
-}
-
-.decrement-days {
-    visibility: hidden;
-    float: left;
-    cursor: pointer;
-}
-
-.stair-pair:hover .change-days-icon {
-    visibility: visible;
 }
