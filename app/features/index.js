@@ -3,3 +3,4 @@
 require('./team/team');
 require('./pairs/pairs');
 require('./stairs/stairs');
+require('./login/login');

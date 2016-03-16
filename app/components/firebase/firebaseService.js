@@ -72,6 +72,15 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
                 deferred.reject(error);
             });
             return deferred.promise;
+        },
+        set: function(ref, object) {
+            var deferred = $q.defer();
+            ref.set(object).then(function(response) {
+                deferred.resolve(response);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
         }
 
     };
