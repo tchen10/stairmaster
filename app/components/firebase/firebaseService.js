@@ -8,6 +8,7 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
 
     var personsRef = new Firebase(FIREBASE_URL + 'Persons');
     var pairsRef = new Firebase(FIREBASE_URL + 'Pairs');
+
     var pairs = $firebaseArray(pairsRef);
     var persons = $firebaseArray(personsRef);
 
@@ -17,7 +18,6 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
         var person2Id = pair.person2.id;
         personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
         personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person1Id + '/stairs/' + snapshot.key()).set({ id: snapshot.key(), active: true });
     });
 
     return {
@@ -59,6 +59,15 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
             var deferred = $q.defer();
             array.$remove(element).then(function(ref) {
                 deferred.resolve(ref);
+            }, function(error) {
+                deferred.reject(error);
+            });
+            return deferred.promise;
+        },
+        loaded: function(object) {
+            var deferred = $q.defer();
+            object.$loaded().then(function(data) {
+                deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error);
             });

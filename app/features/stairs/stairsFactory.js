@@ -5,9 +5,9 @@ var Firebase = require('firebase');
 angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
 
 .factory('StairsFactory', ['FirebaseService', function(FirebaseService) {
+
     return {
-        generateStairs: function(persons, firebasePairs) {
-            var pairs = firebasePairs;
+        generateStairs: function(persons, pairs) {
             var timestamp = FirebaseService.getTimestamp();
             var stairs = {
                 rows: {},
@@ -16,7 +16,7 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
             var rowNumber = 0;
 
             angular.forEach(persons, function(person, personKey) {
-                if (Object.keys(pairs).length > 0) {
+                if (Object.keys(persons).length > 0) {
                     var personId = personKey;
                     var rowKey = 'row' + rowNumber;
                     stairs.rows[rowKey] = {};
@@ -24,14 +24,15 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
 
                     row.pairs = {};
                     var pairNumber = 0;
-                    angular.forEach(pairs, function(pair, pairId) {
+                    angular.forEach(pairs, function(pair, pairKey) {
+                        var pairId = pairKey;
                         row.name = person.first;
-                        var pairKey = 'pair' + pairNumber;
-                        if (pair.person1.id === personKey) {
-                            row.pairs[pairKey] = { id: pairId };
-                            delete pairs[pairId];
+                        var pairIdentifier = 'pair' + pairNumber;
+                        if (pair.person1.id === personId) {
+                            row.pairs[pairIdentifier] = { id: pairId };
+                            pairNumber++;
+                            delete pairs[pair];
                         }
-                        pairNumber++;
                     });
                     rowNumber++;
                 }

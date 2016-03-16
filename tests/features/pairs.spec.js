@@ -4,20 +4,41 @@ describe('stairmaster.pairs module', function() {
     beforeEach(module('stairmaster.pairs'));
 
     describe('pairs controller', function() {
-        var pairsCtrl, scope, FirebaseServiceMock;
+        var pairsCtrl, scope, FirebaseServiceMock, FirebaseRestServiceMock, StairsFactoryMock, deferred;
 
         beforeEach(function() {
+            module('stairmaster.pairs.pairs-controller');
+
+            inject(function($q) {
+                deferred = $q.defer();
+            });
 
             FirebaseServiceMock = {
-                getFirebaseArray: function() {},
+                getFirebaseArray: function() {
+                    return [];
+                },
                 getRecord: function() {},
                 save: function() {}
             };
 
-            module('stairmaster.pairs.pairs-controller');
+            FirebaseRestServiceMock = {
+                getActivePersons: function() {
+                    deferred.resolve();
+                    return deferred.promise;
+                },
+                getActivePairs: function() {
+                    deferred.resolve();
+                    return deferred.promise;
+                }
+            };
+
+            StairsFactoryMock = {
+                generateStairs: function() {}
+            };
+
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
-                pairsCtrl = $controller('PairsCtrl', { $scope: scope, FirebaseService: FirebaseServiceMock });
+                pairsCtrl = $controller('PairsCtrl', { $scope: scope, FirebaseService: FirebaseServiceMock, FirebaseRestService: FirebaseRestServiceMock, StairsFactory: StairsFactoryMock });
             });
 
             scope.pairs = [];

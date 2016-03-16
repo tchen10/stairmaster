@@ -24,28 +24,173 @@ describe('stairmaster.stairs.module', function() {
             var persons, pairs, person1, person2, person3;
 
             beforeEach(function() {
-                person1 = { id: 'person1Id', first: 'person1Name' };
-                person2 = { id: 'person2Id', first: 'person2Name' };
-                person3 = { id: 'person3Id', first: 'person3Name' };
-
-                persons = {
-                    person1Id: person1,
-                    person2Id: person2,
-                    person3Id: person3
+                pairs = {
+                    'pair1Id': {
+                        'person1': {
+                            'id': 'michaelId',
+                            'person': {
+                                'first': 'Michael',
+                                'last': 'Scott'
+                            }
+                        },
+                        'person2': {
+                            'id': 'jimId',
+                            'person': {
+                                'first': 'Jim',
+                                'last': 'Halpert'
+                            }
+                        }
+                    },
+                    'pair2Id': {
+                        'person1': {
+                            'id': 'michaelId',
+                            'person': {
+                                'first': 'Michael',
+                                'last': 'Scott'
+                            }
+                        },
+                        'person2': {
+                            'id': 'pamId',
+                            'person': {
+                                'first': 'Pam',
+                                'last': 'Beesley'
+                            }
+                        }
+                    },
+                    'pair3Id': {
+                        'person1': {
+                            'id': 'jimId',
+                            'person': {
+                                'first': 'Jim',
+                                'last': 'Halpert'
+                            }
+                        },
+                        'person2': {
+                            'id': 'pamId',
+                            'person': {
+                                'first': 'Pam',
+                                'last': 'Beesley'
+                            }
+                        }
+                    }
                 };
 
-                pairs = {
-                    pair1Id: {
-                        person1: person1,
-                        person2: person2
+                persons = {
+                    'michaelId': {
+                        'first': 'Michael',
+                        'last': 'Scott',
+                        'pairs': {
+                            'pair1Id': {
+                                'person1': {
+                                    'id': 'michaelId',
+                                    'person': {
+                                        'first': 'Michael',
+                                        'last': 'Scott'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'jimId',
+                                    'person': {
+                                        'first': 'Jim',
+                                        'last': 'Halpert'
+                                    }
+                                }
+                            },
+                            'pair2Id': {
+                                'person1': {
+                                    'id': 'michaelId',
+                                    'person': {
+                                        'first': 'Michael',
+                                        'last': 'Scott'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'pamId',
+                                    'person': {
+                                        'first': 'Pam',
+                                        'last': 'Beesley'
+                                    }
+                                }
+                            }
+                        }
                     },
-                    pair2Id: {
-                        person1: person1,
-                        person2: person3
+                    'jimId': {
+                        'first': 'Jim',
+                        'last': 'Halpert',
+                        'pairs': {
+                            'pair1Id': {
+                                'person1': {
+                                    'id': 'person1Id',
+                                    'person': {
+                                        'first': 'Michael',
+                                        'last': 'Scott'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'jimId',
+                                    'person': {
+                                        'first': 'Jim',
+                                        'last': 'Halpert'
+                                    }
+                                }
+                            },
+                            'pair3Id': {
+                                'active': true,
+                                'days': 1,
+                                'person1': {
+                                    'id': 'jimId',
+                                    'person': {
+                                        'first': 'Jim',
+                                        'last': 'Halpert'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'pamId',
+                                    'person': {
+                                        'first': 'Pam',
+                                        'last': 'Beesley'
+                                    }
+                                }
+                            }
+                        }
                     },
-                    pair3Id: {
-                        person1: person2,
-                        person2: person3
+                    'pamId': {
+                        'first': 'Pam',
+                        'last': 'Beesley',
+                        'pairs': {
+                            'pair2Id': {
+                                'person1': {
+                                    'id': 'person1Id',
+                                    'person': {
+                                        'first': 'Michael',
+                                        'last': 'Scott'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'pamId',
+                                    'person': {
+                                        'first': 'Pam',
+                                        'last': 'Beesley'
+                                    }
+                                }
+                            },
+                            'pair3Id': {
+                                'person1': {
+                                    'id': 'jimId',
+                                    'person': {
+                                        'first': 'Jim',
+                                        'last': 'Kurutin'
+                                    }
+                                },
+                                'person2': {
+                                    'id': 'pamId',
+                                    'person': {
+                                        'first': 'Pam',
+                                        'last': 'Beesley'
+                                    }
+                                }
+                            }
+                        }
                     }
                 };
 
@@ -60,18 +205,22 @@ describe('stairmaster.stairs.module', function() {
                                 pair0: { id: 'pair1Id' },
                                 pair1: { id: 'pair2Id' }
                             },
-                            name: 'person1Name'
-
+                            name: 'Michael'
                         },
                         row1: {
                             pairs: {
                                 pair0: { id: 'pair3Id' }
                             },
-                            name: 'person2Name'
+                            name: 'Jim'
+                        },
+                        row2: {
+                            pairs: {},
+                            name: 'Pam'
                         }
                     },
                     timestamp: 'timestamp'
                 };
+
                 var stairs = stairsFactory.generateStairs(persons, pairs);
 
                 expect(stairs).toEqual(expectedStairs);

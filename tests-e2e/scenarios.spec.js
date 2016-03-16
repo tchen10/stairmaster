@@ -73,10 +73,10 @@ describe('stairmaster', function() {
             var pairStairTab = element.all(by.css('[ui-sref="pairstairs"]')).last();
             pairStairTab.click();
             expect(element.all(by.css('[ui-view] h2')).first().getText()).
-            toMatch(/Pairs/);
+            toMatch(/Pair Stairs/);
 
-            var stairRows = element.all(by.repeater('person in persons'));
-            expect(stairRows.count()).toEqual(3);
+            // var stairRows = element.all(by.repeater('person in persons'));
+            // expect(stairRows.count()).toEqual(3);
         });
     });
 });
