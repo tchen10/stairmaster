@@ -19,13 +19,24 @@ var app = angular.module('stairmaster', [
     'stairmaster.login'
 ]);
 
+app.run(['$rootScope', '$state', function($rootScope, $state) {
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        $state.go('login');
+    });
+}]);
+
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('team', {
                 url: '/settings',
                 templateUrl: 'features/team/team.html',
-                controller: 'TeamCtrl'
+                controller: 'TeamCtrl',
+                resolve: {
+                    currentUser: ['FirebaseAuth', function(FirebaseAuth) {
+                        return FirebaseAuth.$requireAuth();
+                    }]
+                }
             })
             .state('team.addPerson', {
                 url: '/add',
@@ -40,7 +51,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
             .state('pairstairs', {
                 url: '/pairstairs',
                 templateUrl: 'features/pairs/pairs.html',
-                controller: 'PairsCtrl'
+                controller: 'PairsCtrl',
+                resolve: {
+                    currentUser: ['FirebaseAuth', function(FirebaseAuth) {
+                        return FirebaseAuth.$requireAuth();
+                    }]
+                }
             })
             .state('login', {
                 url: '/login',
