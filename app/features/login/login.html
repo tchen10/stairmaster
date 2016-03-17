@@ -1,35 +1,50 @@
-<h2>Welcome</h2>
-<h4>Please log in with your team name. If you don't have a team name, please register one now.</h4>
-<div class="well">
-    <form>
-        <p ng-show="error" class="error">{{error}}</p>
-        <div class="form-group">
-            <label for="email">
-                Email:
-            </label>
-            <input type="text" ng-model="email"/>
+<div class="container">
+    <div class="row">
+        <div class="login-container">
+            <div class="col-md-6">
+                <h2>Welcome</h2>
+            </div>
+            <div class="col-md-6">
+                <form class="login-form">
+                    <p ng-show="error" class="error">{{error}}</p>
+                    <div class="form-group">
+                        <label for="email">
+                            Email:
+                        </label>
+                        <div>
+                            <input type="text" ng-model="email" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-cloak ng-show="createMode">
+                        <label for="team-name">
+                            Team Name:
+                        </label>
+                        <div>
+                            <input type="text" ng-model="teamName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                            Password:
+                        </label>
+                        <div>
+                            <input type="password" ng-model="password" />
+                        </div>
+                    </div>
+                    <div class="form-group" ng-cloak ng-show="createMode">
+                        <label for="confirm-password">
+                            Confirm Password:
+                        </label>
+                        <div>
+                            <input type="password" ng-model="confirmPassword" />
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" ng-click="login(email, password)" ng-hide="createMode">Log In</button>
+                    <button class="btn btn-default" ng-click="createMode = true" ng-hide="createMode">Register</button>
+                    <button class="btn btn-primary" ng-cloak ng-show="createMode" ng-click="createAccount()">Create Account</button>
+                    <button class="btn btn-default" ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group" ng-cloak ng-show="createMode">
-            <label for="team-name">
-                Team Name:
-            </label>
-            <input type="text" ng-model="teamName" />
-        </div>
-        <div class="form-group">
-            <label for="password">
-                Password:
-            </label>
-            <input type="password" ng-model="password"/>
-        </div>
-        <div class="form-group" ng-cloak ng-show="createMode">
-            <label for="confirm-password">
-                Confirm Password:
-            </label>
-            <input type="password" ng-model="confirmPassword" />
-        </div>
-        <button class="btn btn-primary" ng-click="login(email, password)" ng-hide="createMode">Log In</button>
-        <button class="btn btn-default" ng-click="createMode = true" ng-hide="createMode">Register</button>
-        <button class="btn btn-primary" ng-cloak ng-show="createMode" ng-click="createAccount()">Create Account</button>
-        <button class="btn btn-default" ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
-    </form>
+    </div>
 </div>

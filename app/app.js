@@ -28,8 +28,13 @@ app.run(['$rootScope', '$state', function($rootScope, $state) {
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
+            .state('common', {
+                templateUrl: 'features/common.html',
+                abstract: true,
+            })
             .state('team', {
                 url: '/settings',
+                parent: 'common',
                 templateUrl: 'features/team/team.html',
                 controller: 'TeamCtrl',
                 resolve: {
@@ -50,6 +55,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
             })
             .state('pairstairs', {
                 url: '/pairstairs',
+                parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl',
                 resolve: {
@@ -64,6 +70,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 controller: 'LoginCtrl'
             });
 
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/settings');
     }
 ]);
