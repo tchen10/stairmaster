@@ -18,18 +18,16 @@ angular.module('stairmaster.login.login-controller', [])
         var input = {
             email: $scope.email,
             password: $scope.password,
+            confirmPassword: $scope.confirmPassword,
             teamName: $scope.teamName
         };
 
         $scope.error = LoginService.validateInput(input);
         if (!$scope.error) {
             FirebaseAuth.$createUser({ email: input.email, password: input.password })
-                .then(function() {
-                    return FirebaseAuth.$authWithPassword({ email: input.email, password: input.password });
-                })
                 .then(function(user) {
                     var parameters = '/Users/' + user.uid;
-                    var ref = FirebaseService.getFirebase(parameters);
+                    var ref = FirebaseService.getFirebaseRef(parameters);
                     var newUser = {
                         email: input.email,
                         teamName: input.teamName,
@@ -38,7 +36,7 @@ angular.module('stairmaster.login.login-controller', [])
                     return FirebaseService.set(ref, newUser);
                 })
                 .then(function() {
-                    $state.go('team');
+                    $state.go('login');
                 }, function(err) {
                     $scope.error = errMessage(err);
                 });

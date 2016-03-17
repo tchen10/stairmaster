@@ -8,7 +8,6 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
     $scope.persons = FirebaseService.getFirebaseArray('Persons');
     $scope.pairs = FirebaseService.getFirebaseArray('Pairs');
-
     var users = FirebaseService.getFirebaseArray('Users');
     FirebaseService.loaded(users).then(function() {
         $scope.user = FirebaseService.getRecord(users, currentUser.uid);

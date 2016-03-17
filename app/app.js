@@ -68,6 +68,16 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/login',
                 templateUrl: 'features/login/login.html',
                 controller: 'LoginCtrl'
+            })
+            .state('login.logout', {
+                url: '/logout',
+                templateUrl: 'features/login/login.html',
+                controller: 'LoginCtrl',
+                resolve: {
+                    currentUser: ['FirebaseAuth', function(FirebaseAuth) {
+                        return FirebaseAuth.$unAuth();
+                    }]
+                }
             });
 
         $urlRouterProvider.otherwise('/settings');
