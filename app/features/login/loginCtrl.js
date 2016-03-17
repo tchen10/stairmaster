@@ -14,7 +14,6 @@ angular.module('stairmaster.login.login-controller', [])
             });
     };
 
-
     $scope.createAccount = function() {
         var input = {
             email: $scope.email,
@@ -33,7 +32,8 @@ angular.module('stairmaster.login.login-controller', [])
                     var ref = FirebaseService.getFirebase(parameters);
                     var newUser = {
                         email: input.email,
-                        teamName: input.teamName
+                        teamName: input.teamName,
+                        timestamp: FirebaseService.getTimestamp()
                     };
                     return FirebaseService.set(ref, newUser);
                 })
