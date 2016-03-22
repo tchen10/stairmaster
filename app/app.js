@@ -21,8 +21,13 @@ var app = angular.module('stairmaster', [
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
+            .state('common', {
+                templateUrl: 'features/common.html',
+                abstract: true
+            })
             .state('team', {
                 url: '/settings',
+                parent: 'common',
                 templateUrl: 'features/team/team.html',
                 controller: 'TeamCtrl'
             })
@@ -38,6 +43,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
             })
             .state('pairstairs', {
                 url: '/pairstairs',
+                parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl'
             });
@@ -45,5 +51,3 @@ app.config(['$stateProvider', '$urlRouterProvider',
         $urlRouterProvider.otherwise('/settings');
     }
 ]);
-
-app.constant('FirebaseUrl', 'https://stairmaster.firebaseio.com/');
