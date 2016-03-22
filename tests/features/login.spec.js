@@ -4,7 +4,7 @@ describe('stairmaster.login module', function() {
     beforeEach(module('stairmaster.login'));
 
     describe('login controller', function() {
-        var loginCtrl, scope, state, mockFirebaseService;
+        var loginCtrl, scope, state, mockFirebaseService, mockLoginService;
 
         beforeEach(function() {
             module('stairmaster.login.login-controller');
@@ -19,6 +19,10 @@ describe('stairmaster.login module', function() {
                 set: function() {}
             };
 
+            mockLoginService = {
+                validateTeamName: function() {}
+            };
+
             state = {
                 go: function() {}
             };
@@ -28,7 +32,8 @@ describe('stairmaster.login module', function() {
                 loginCtrl = $controller('LoginCtrl', {
                     $scope: scope,
                     $state: state,
-                    FirebaseService: mockFirebaseService
+                    FirebaseService: mockFirebaseService,
+                    LoginService: mockLoginService
                 });
             });
         });
@@ -36,15 +41,37 @@ describe('stairmaster.login module', function() {
         describe('.addTeam', function() {
 
             beforeEach(function() {
-                scope.teamName = 'Milkshake';
+                scope.teamName = 'Wildcats';
             });
 
-            it('should use FirebaseService to add team', function() {
+            it('should use FirebaseService to add team when teamName is valid', function() {
                 spyOn(mockFirebaseService, 'set');
+                spyOn(mockLoginService, 'validateTeamName').and.returnValue('');
+
                 scope.addTeam();
                 scope.$apply();
-                expect(mockFirebaseService.set).toHaveBeenCalledWith('ref', 'Milkshake',
-                    { teamName: 'Milkshake', timestamp: 'timestamp' });
+
+                expect(mockFirebaseService.set).toHaveBeenCalledWith('ref', 'Wildcats', { teamName: 'Wildcats', timestamp: 'timestamp' });
+            });
+
+            it('should not add team when teamName is invalid', function() {
+                spyOn(mockFirebaseService, 'set');
+                spyOn(mockLoginService, 'validateTeamName').and.returnValue('error');
+
+                scope.addTeam();
+                scope.$apply();
+
+                expect(mockFirebaseService.set).not.toHaveBeenCalled();
+            });
+
+            it('should set error message when teamName is invalid', function() {
+                spyOn(mockFirebaseService, 'set');
+                spyOn(mockLoginService, 'validateTeamName').and.returnValue('error');
+
+                scope.addTeam();
+                scope.$apply();
+
+                expect(scope.err).toBe('error');
             });
 
             it('should clear teamName field after adding team', function() {
@@ -52,6 +79,79 @@ describe('stairmaster.login module', function() {
                 scope.$apply();
 
                 expect(scope.teamName).toBe('');
+            });
+        });
+    });
+
+    describe('login service', function() {
+        var loginService, mockFirebaseService;
+
+        beforeEach(function() {
+            mockFirebaseService = {
+                getRecord: function() {},
+                getFirebaseArray: function() {}
+            };
+
+            module('stairmaster.login.login-service');
+            module(function($provide) {
+                $provide.value('FirebaseService', mockFirebaseService);
+            });
+
+            inject(function(_LoginService_) {
+                loginService = _LoginService_;
+            });
+
+        });
+
+        describe('.validateTeamName', function() {
+            it('should not return an error if teamName does not exist', function() {
+                var teamName = 'wildcats123';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('');
+            });
+
+            it('should return an error if record with teamName does exist', function() {
+                var teamName = 'wildcats';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue({ teamName: {} });
+
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('Team name "wildcats" already exists');
+            });
+
+            it('should return an error if teamName is empty', function() {
+                var teamName = '';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('Team name must be at least 6 characters');
+            });
+
+            it('should return an error if teamName is less than 6 characters', function() {
+                var teamName = 'boop';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('Team name must be at least 6 characters');
+            });
+
+            it('should return an error if teamName has whitespaces', function() {
+                var teamName = 'betty boop';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('Team name cannot have spaces');
+            });
+
+            it('should return an error if teamName has special characters', function() {
+                var teamName = 'bettyboop/';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+                var error = loginService.validateTeamName(teamName);
+
+                expect(error).toBe('Team name can only have alphanumeric characters');
             });
         });
     });
