@@ -15,7 +15,8 @@ var app = angular.module('stairmaster', [
     'stairmaster.firebase',
     'stairmaster.team',
     'stairmaster.pairs',
-    'stairmaster.stairs'
+    'stairmaster.stairs',
+    'stairmaster.login'
 ]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
@@ -46,8 +47,13 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl'
+            })
+            .state('login', {
+                url: '/welcome',
+                templateUrl: 'features/login/login.html',
+                controller: 'LoginCtrl'
             });
 
-        $urlRouterProvider.otherwise('/settings');
+        $urlRouterProvider.otherwise('/login');
     }
 ]);
