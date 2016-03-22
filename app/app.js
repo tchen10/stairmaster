@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 abstract: true
             })
             .state('team', {
-                url: '/settings',
+                url: '{teamName}/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
                 controller: 'TeamCtrl'
