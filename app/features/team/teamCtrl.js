@@ -4,7 +4,7 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.team.team-controller', [require('angularfire')])
 
-.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', 'PairsService', 'FirebaseService', 'currentUser', function($scope, $state, $firebaseArray, PairsService, FirebaseService, currentUser) {
+.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', 'PairsService', 'FirebaseService', 'currentUser', 'FirebaseAuth', function($scope, $state, $firebaseArray, PairsService, FirebaseService, currentUser, FirebaseAuth) {
 
     $scope.persons = FirebaseService.getFirebaseArray('Persons');
     $scope.pairs = FirebaseService.getFirebaseArray('Pairs');
