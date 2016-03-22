@@ -8,9 +8,11 @@ angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
     var persons = FirebaseService.getFirebaseArray('Persons');
     var pairs = FirebaseService.getFirebaseArray('Pairs');
 
-    FirebaseRestService.getActivePersons().then(function(persons) {
-        FirebaseRestService.getActivePairs().then(function(pairs) {
-            $scope.stairs = StairsFactory.generateStairs(persons.data, pairs.data);
+    FirebaseRestService.getActivePersons().then(function(response) {
+        $scope.activePersons = response.data;
+        FirebaseRestService.getActivePairs().then(function(response) {
+            $scope.activePairs = response.data;
+            $scope.stairs = StairsFactory.generateStairs($scope.activePersons, $scope.activePairs);
         });
     });
 

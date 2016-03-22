@@ -2,12 +2,10 @@
 
 require('./firebaseService');
 require('./firebaseRestService');
-require('./firebaseAuth');
 
 angular.module('stairmaster.firebase', [
     'stairmaster.firebase.firebase-service',
-    'stairmaster.firebase.firebase-rest-service',
-    'stairmaster.firebase.firebase-auth'
+    'stairmaster.firebase.firebase-rest-service'
 ])
 
 .constant('FIREBASE_URL', 'https://stairmaster.firebaseio.com/');

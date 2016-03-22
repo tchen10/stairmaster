@@ -15,33 +15,16 @@ var app = angular.module('stairmaster', [
     'stairmaster.firebase',
     'stairmaster.team',
     'stairmaster.pairs',
-    'stairmaster.stairs',
-    'stairmaster.login'
+    'stairmaster.stairs'
 ]);
-
-app.run(['$rootScope', '$state', function($rootScope, $state) {
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-        $state.go('login');
-    });
-}]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
-            .state('common', {
-                templateUrl: 'features/common.html',
-                abstract: true,
-            })
             .state('team', {
                 url: '/settings',
-                parent: 'common',
                 templateUrl: 'features/team/team.html',
-                controller: 'TeamCtrl',
-                resolve: {
-                    currentUser: ['FirebaseAuth', function(FirebaseAuth) {
-                        return FirebaseAuth.$requireAuth();
-                    }]
-                }
+                controller: 'TeamCtrl'
             })
             .state('team.addPerson', {
                 url: '/add',
@@ -55,21 +38,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
             })
             .state('pairstairs', {
                 url: '/pairstairs',
-                parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
-                controller: 'PairsCtrl',
-                resolve: {
-                    currentUser: ['FirebaseAuth', function(FirebaseAuth) {
-                        return FirebaseAuth.$requireAuth();
-                    }]
-                }
-            })
-            .state('login', {
-                url: '/login',
-                templateUrl: 'features/login/login.html',
-                controller: 'LoginCtrl'
+                controller: 'PairsCtrl'
             });
 
         $urlRouterProvider.otherwise('/settings');
     }
 ]);
+
+app.constant('FirebaseUrl', 'https://stairmaster.firebaseio.com/');

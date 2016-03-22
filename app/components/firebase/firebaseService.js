@@ -6,15 +6,11 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
 
 .service('FirebaseService', ['$firebaseArray', 'FIREBASE_URL', '$q', function($firebaseArray, FIREBASE_URL, $q) {
 
-    var ref = new Firebase(FIREBASE_URL);
-    var authData = ref.getAuth();
-    var userSchema;
-    if (authData) {
-        userSchema = 'Users/' + authData.uid + '/';
-    }
+    var personsRef = new Firebase(FIREBASE_URL + 'Persons');
+    var pairsRef = new Firebase(FIREBASE_URL + 'Pairs');
 
-    var personsRef = new Firebase(FIREBASE_URL + userSchema + 'Persons');
-    var pairsRef = new Firebase(FIREBASE_URL + userSchema + 'Pairs');
+    var pairs = $firebaseArray(pairsRef);
+    var persons = $firebaseArray(personsRef);
 
     pairsRef.on('child_added', function(snapshot) {
         var pair = snapshot.val();
@@ -25,14 +21,11 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
     });
 
     return {
-        getFirebaseRef: function(parameters) {
+        getFirebase: function(parameters) {
             return new Firebase(FIREBASE_URL + parameters);
         },
-        getFirebase: function(parameters) {
-            return new Firebase(FIREBASE_URL + userSchema + parameters);
-        },
         getFirebaseArray: function(parameters) {
-            var ref = new Firebase(FIREBASE_URL + userSchema + parameters);
+            var ref = new Firebase(FIREBASE_URL + parameters);
             return $firebaseArray(ref);
         },
         getFirebaseId: function(object) {
@@ -75,15 +68,6 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
             var deferred = $q.defer();
             object.$loaded().then(function(data) {
                 deferred.resolve(data);
-            }, function(error) {
-                deferred.reject(error);
-            });
-            return deferred.promise;
-        },
-        set: function(ref, object) {
-            var deferred = $q.defer();
-            ref.set(object).then(function(response) {
-                deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
             });
