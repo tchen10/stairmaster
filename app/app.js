@@ -13,6 +13,7 @@ var app = angular.module('stairmaster', [
     'ui.router',
     'stairmaster.version',
     'stairmaster.firebase',
+    'stairmaster.navigation',
     'stairmaster.team',
     'stairmaster.pairs',
     'stairmaster.stairs',
@@ -23,11 +24,17 @@ app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('common', {
-                templateUrl: 'features/common.html',
-                abstract: true
+                url: '/{teamId}',
+                templateUrl: 'components/navigation/navigation.html',
+                controller: 'NavigationCtrl',
+                resolve: {
+                    teamId: ['$stateParams', function($stateParams) {
+                        return $stateParams.teamId;
+                    }]
+                }
             })
             .state('team', {
-                url: '/{teamId}/settings',
+                url: '/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
                 controller: 'TeamCtrl'
@@ -43,7 +50,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 controller: 'TeamCtrl'
             })
             .state('pairstairs', {
-                url: '/{teamId}/pairstairs',
+                url: '/pairstairs',
                 parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl'

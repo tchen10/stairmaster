@@ -25,6 +25,10 @@ describe('stairmaster.team module', function() {
                 go: function() {}
             };
 
+            stateParams = {
+                teamId: 'teamId'
+            };
+
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
                 teamCtrl = $controller('TeamCtrl', {
