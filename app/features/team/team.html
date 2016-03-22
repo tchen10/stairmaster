@@ -1,5 +1,6 @@
 <div class="col-md-7">
-    <h3>Team Members</h3>
+    <h3>Team Dashboard for {{ teamId }}</h3>
+    <h4>People</h4>
     <div class="well">
         <ul class="person-list active">
             <li ng-repeat="person in persons | filter: { active: true }" class="person">
@@ -19,7 +20,7 @@
         </ul>
         <button ui-sref="team.addPerson" class="btn btn-primary" id="addPersonForm">Add Person</button>
     </div>
-    <h3>Pairs</h3>
+    <h4>Pairs</h4>
     <div class="well">
         <ul class="pairs-list active">
             <li ng-repeat="pair in pairs | orderBy: '-person1.id': true | filter: { active: true }" class="pair">

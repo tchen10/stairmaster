@@ -43,7 +43,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 controller: 'TeamCtrl'
             })
             .state('pairstairs', {
-                url: '/pairstairs',
+                url: '/{teamId}/pairstairs',
                 parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
                 controller: 'PairsCtrl'

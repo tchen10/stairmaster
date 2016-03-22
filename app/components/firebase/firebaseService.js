@@ -4,13 +4,11 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.firebase.firebase-service', [require('angularfire')])
 
-.service('FirebaseService', ['$firebaseArray', 'FIREBASE_URL', '$q', function($firebaseArray, FIREBASE_URL, $q) {
+.service('FirebaseService', ['$firebaseArray', 'FIREBASE_URL', '$q', '$stateParams', function($firebaseArray, FIREBASE_URL, $q, $stateParams) {
 
-    var personsRef = new Firebase(FIREBASE_URL + 'Persons');
-    var pairsRef = new Firebase(FIREBASE_URL + 'Pairs');
-
-    var pairs = $firebaseArray(pairsRef);
-    var persons = $firebaseArray(personsRef);
+    var teamRoute = 'Teams/' + $stateParams.teamId + '/';
+    var personsRef = new Firebase(FIREBASE_URL + teamRoute + 'Persons');
+    var pairsRef = new Firebase(FIREBASE_URL + teamRoute + 'Pairs');
 
     pairsRef.on('child_added', function(snapshot) {
         var pair = snapshot.val();
@@ -25,7 +23,7 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
             return new Firebase(FIREBASE_URL + parameters);
         },
         getFirebaseArray: function(parameters) {
-            var ref = new Firebase(FIREBASE_URL + parameters);
+            var ref = new Firebase(FIREBASE_URL + teamRoute + parameters);
             return $firebaseArray(ref);
         },
         getFirebaseId: function(object) {

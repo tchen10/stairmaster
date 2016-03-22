@@ -4,11 +4,13 @@ var Firebase = require('firebase');
 
 angular.module('stairmaster.firebase.firebase-rest-service', [require('angularfire')])
 
-.service('FirebaseRestService', ['$firebaseArray', 'FIREBASE_URL', '$q', '$http', function($firebaseArray, FIREBASE_URL, $q, $http) {
+.service('FirebaseRestService', ['$firebaseArray', 'FIREBASE_URL', '$q', '$http', '$stateParams', function($firebaseArray, FIREBASE_URL, $q, $http, $stateParams) {
+
+    var teamRoute = 'Teams/' + $stateParams.teamId + '/';
 
     return {
         getActivePersons: function() {
-            var activePersonsUrl = FIREBASE_URL + 'Persons.json?orderBy="active"&equalTo=true';
+            var activePersonsUrl = FIREBASE_URL + teamRoute + 'Persons.json?orderBy="active"&equalTo=true';
             var deferred = $q.defer();
             $http({
                 method: 'GET',
@@ -22,7 +24,7 @@ angular.module('stairmaster.firebase.firebase-rest-service', [require('angularfi
         },
 
         getActivePairs: function() {
-            var activePairsUrl = FIREBASE_URL + 'Pairs.json?orderBy="active"&equalTo=true';
+            var activePairsUrl = FIREBASE_URL + teamRoute + 'Pairs.json?orderBy="active"&equalTo=true';
             var deferred = $q.defer();
             $http({
                 method: 'GET',
