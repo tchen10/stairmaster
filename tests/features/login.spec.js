@@ -4,7 +4,7 @@ describe('stairmaster.login module', function() {
     beforeEach(module('stairmaster.login'));
 
     describe('login controller', function() {
-        var loginCtrl, scope, state, mockFirebaseService, mockLoginService;
+        var loginCtrl, scope, state, mockFirebaseService, mockLoginService, deferred;
 
         beforeEach(function() {
             module('stairmaster.login.login-controller');
@@ -27,6 +27,10 @@ describe('stairmaster.login module', function() {
                 go: function() {}
             };
 
+            inject(function($q) {
+                deferred = $q.defer();
+            });
+
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
                 loginCtrl = $controller('LoginCtrl', {
@@ -41,21 +45,35 @@ describe('stairmaster.login module', function() {
         describe('.addTeam', function() {
 
             beforeEach(function() {
+                spyOn(state, 'go');
+                spyOn(mockFirebaseService, 'set').and.callFake(function() {
+                    deferred.resolve();
+                    return deferred.promise;
+                });
                 scope.teamName = 'Wildcats';
             });
 
-            it('should use FirebaseService to add team when teamName is valid', function() {
-                spyOn(mockFirebaseService, 'set');
+            it('should add valid team', function() {
                 spyOn(mockLoginService, 'validateTeamName').and.returnValue('');
 
                 scope.addTeam();
                 scope.$apply();
 
-                expect(mockFirebaseService.set).toHaveBeenCalledWith('ref', 'Wildcats', { teamName: 'Wildcats', timestamp: 'timestamp' });
+                expect(mockFirebaseService.set).toHaveBeenCalledWith('ref', 'Wildcats',
+                    { teamName: 'Wildcats', timestamp: 'timestamp' });
+            });
+
+
+            it('should redirect to team settings when team is added', function() {
+                spyOn(mockLoginService, 'validateTeamName').and.returnValue('');
+
+                scope.addTeam();
+                scope.$apply();
+
+                expect(state.go).toHaveBeenCalledWith('team', {teamId: 'Wildcats'});
             });
 
             it('should not add team when teamName is invalid', function() {
-                spyOn(mockFirebaseService, 'set');
                 spyOn(mockLoginService, 'validateTeamName').and.returnValue('error');
 
                 scope.addTeam();
@@ -64,8 +82,8 @@ describe('stairmaster.login module', function() {
                 expect(mockFirebaseService.set).not.toHaveBeenCalled();
             });
 
+
             it('should set error message when teamName is invalid', function() {
-                spyOn(mockFirebaseService, 'set');
                 spyOn(mockLoginService, 'validateTeamName').and.returnValue('error');
 
                 scope.addTeam();

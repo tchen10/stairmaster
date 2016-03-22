@@ -4,7 +4,7 @@ describe('stairmaster.team module', function() {
     beforeEach(module('stairmaster.team'));
 
     describe('team controller', function() {
-        var teamCtrl, scope, state, PairsServiceMock, FirebaseServiceMock;
+        var teamCtrl, scope, state, stateParams, PairsServiceMock, FirebaseServiceMock;
 
         beforeEach(module('stairmaster.team.team-controller'));
 
@@ -27,7 +27,12 @@ describe('stairmaster.team module', function() {
 
             inject(function($controller, $rootScope) {
                 scope = $rootScope.$new();
-                teamCtrl = $controller('TeamCtrl', { $scope: scope, $state: state, PairsService: PairsServiceMock, FirebaseService: FirebaseServiceMock });
+                teamCtrl = $controller('TeamCtrl', {
+                    $scope: scope,
+                    $state: state,
+                    PairsService: PairsServiceMock,
+                    FirebaseService: FirebaseServiceMock,
+                    $stateParams: stateParams });
             });
 
         });

@@ -8,15 +8,18 @@ angular.module('stairmaster.login.login-controller', [])
 
     $scope.addTeam = function() {
         var timestamp = FirebaseService.getTimestamp();
+        var teamName = $scope.teamName;
         var team = {
-            teamName: $scope.teamName,
+            teamName: teamName,
             timestamp: timestamp
         };
 
-        $scope.err = LoginService.validateTeamName($scope.teamName);
+        $scope.err = LoginService.validateTeamName(teamName);
 
         if ($scope.err === '') {
-            FirebaseService.set(teamsRef, $scope.teamName, team);
+            FirebaseService.set(teamsRef, teamName, team).then(function() {
+                $state.go('team', {teamId: teamName});
+            });
         }
 
         $scope.teamName = '';

@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 abstract: true
             })
             .state('team', {
-                url: '{teamName}/settings',
+                url: '/{teamId}/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
                 controller: 'TeamCtrl'
@@ -54,6 +54,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 controller: 'LoginCtrl'
             });
 
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/welcome');
     }
 ]);
