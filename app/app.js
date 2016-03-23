@@ -27,6 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/{teamId}',
                 templateUrl: 'components/navigation/navigation.html',
                 controller: 'NavigationCtrl',
+                abstract: true,
                 resolve: {
                     teamId: ['$stateParams', function($stateParams) {
                         return $stateParams.teamId;
@@ -37,6 +38,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
+                cache: false,
                 controller: 'TeamCtrl'
             })
             .state('team.addPerson', {

@@ -23,7 +23,12 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
             return new Firebase(FIREBASE_URL + parameters);
         },
         getFirebaseArray: function(parameters) {
-            var ref = new Firebase(FIREBASE_URL + teamRoute + parameters);
+            var ref;
+            if ($stateParams.teamId) {
+                ref = new Firebase(FIREBASE_URL + teamRoute + parameters);
+            } else {
+                ref = new Firebase(FIREBASE_URL + parameters);
+            }
             return $firebaseArray(ref);
         },
         getFirebaseId: function(object) {

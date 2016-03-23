@@ -19,6 +19,13 @@ angular.module('stairmaster.login.login-service', [])
                 return 'Team name "' + teamName + '" already exists';
             }
             return '';
+        },
+
+        findTeamName: function(teamName) {
+            if (FirebaseService.getRecord(teams, teamName) === null) {
+                return 'Team name "' + teamName + '" does not exist';
+            }
+            return '';
         }
     };
 

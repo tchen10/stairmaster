@@ -20,7 +20,8 @@ describe('stairmaster.login module', function() {
             };
 
             mockLoginService = {
-                validateTeamName: function() {}
+                validateTeamName: function() {},
+                findTeamName: function() {}
             };
 
             state = {
@@ -50,7 +51,7 @@ describe('stairmaster.login module', function() {
                     deferred.resolve();
                     return deferred.promise;
                 });
-                scope.teamName = 'Wildcats';
+                scope.newTeamName = 'Wildcats';
             });
 
             it('should add valid team', function() {
@@ -89,14 +90,46 @@ describe('stairmaster.login module', function() {
                 scope.addTeam();
                 scope.$apply();
 
-                expect(scope.err).toBe('error');
+                expect(scope.addTeamError).toBe('error');
             });
 
             it('should clear teamName field after adding team', function() {
                 scope.addTeam();
                 scope.$apply();
 
-                expect(scope.teamName).toBe('');
+                expect(scope.newTeamName).toBe('');
+            });
+        });
+
+        describe('.goToTeam', function() {
+            beforeEach(function() {
+                spyOn(state, 'go');
+                scope.teamName = 'Wildcats';
+            });
+
+            it('should change state when there are no errors', function() {
+                spyOn(mockLoginService, 'findTeamName').and.returnValue('');
+                scope.goToTeam();
+                scope.$apply();
+
+                expect(state.go).toHaveBeenCalledWith('team', {teamId: 'Wildcats'},
+                    {reload: true, inherit: false, notify: true});
+            });
+
+            it('should not change state when there are errors', function() {
+                spyOn(mockLoginService, 'findTeamName').and.returnValue('error');
+                scope.goToTeam();
+                scope.$apply();
+
+                expect(state.go).not.toHaveBeenCalled();
+            });
+
+            it('should set error when there are errors', function() {
+                spyOn(mockLoginService, 'findTeamName').and.returnValue('error');
+                scope.goToTeam();
+                scope.$apply();
+
+                expect(scope.goToTeamError).toBe('error');
             });
         });
     });
@@ -170,6 +203,23 @@ describe('stairmaster.login module', function() {
                 var error = loginService.validateTeamName(teamName);
 
                 expect(error).toBe('Team name can only have alphanumeric characters');
+            });
+        });
+
+        describe('.findTeamName', function() {
+            it('should return false if there are no errors', function() {
+                var teamName = 'winnie';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue({});
+                var error = loginService.findTeamName(teamName);
+
+                expect(error).toBe('');
+            });
+            it('should return error message if teamName does not exist', function() {
+                var teamName = 'winnie';
+                spyOn(mockFirebaseService, 'getRecord').and.returnValue(null);
+                var error = loginService.findTeamName(teamName);
+
+                expect(error).toBe('Team name "winnie" does not exist');
             });
         });
     });
