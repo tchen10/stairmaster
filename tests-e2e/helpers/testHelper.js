@@ -38,6 +38,11 @@ exports.createTeam = function createTeam(teamName) {
     return firebaseRef.child(teamName);
 };
 
+exports.createPerson = function createTeam(teamName, person) {
+    var firebaseRef = new Firebase(FIREBASE_URL + 'Teams/' + teamName);
+    return firebaseRef.child('Persons').push(person);
+};
+
 exports.getFirebase = function getFirebase(parameters) {
     return new Firebase(FIREBASE_URL + parameters);
 };
