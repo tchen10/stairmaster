@@ -46,3 +46,9 @@ exports.createPerson = function createTeam(teamName, person) {
 exports.getFirebase = function getFirebase(parameters) {
     return new Firebase(FIREBASE_URL + parameters);
 };
+
+exports.loadData = function loadData(teamName, data) {
+    var firebaseRef = new Firebase(FIREBASE_URL + 'Teams');
+    firebaseRef.child(teamName).set(data);
+    return firebaseRef.child(teamName);
+};
