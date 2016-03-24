@@ -1,5 +1,6 @@
 'use strict';
 
+var FIREBASE_URL = 'https://stairmaster-dev.firebaseio.com/';
 var protractor = require('protractor');
 var Firebase = require('firebase');
 
@@ -7,8 +8,6 @@ var flow = protractor.promise.controlFlow();
 var waitOne = function waitOne() {
     return protractor.promise.delayed(500);
 };
-
-var FIREBASE_URL = 'https://stairmaster.firebaseio.com/';
 
 exports.FIREBASE_URL = FIREBASE_URL;
 

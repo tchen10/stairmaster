@@ -6,7 +6,6 @@ module.exports = function(config){
     basePath : '../.',
 
     files : [
-      'node_modules/mockfirebase/browser/mockfirebase.js',
       'app/bundle.js',
       'tests/**/*.spec.js'
     ],

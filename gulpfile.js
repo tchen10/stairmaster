@@ -14,18 +14,20 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
+var replace = require('gulp-replace');
+
 
 gulp.task('connect', function() {
     connect.server({
-    root: 'app/',
-    port: 8888
+        root: 'app/',
+        port: 8888
     });
 });
 
 gulp.task('connectDist', function() {
     connect.server({
-    root: 'dist/',
-    port: 9999
+        root: 'dist/',
+        port: 9999
     });
 });
 
@@ -34,6 +36,36 @@ gulp.task('clean', function() {
         'dist/*',
         'app/bundle.js'
     ]);
+});
+
+gulp.task('firebase-dev', function() {
+    gulp.src(['app/components/firebase/firebase.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster-dev.firebaseio.com/'))
+        .pipe(gulp.dest('app/components/firebase'));
+    gulp.src(['tests-e2e/helpers/testHelper.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster-dev.firebaseio.com/'))
+        .pipe(gulp.dest('tests-e2e/helpers'));
+});
+
+gulp.task('firebase-ci', function() {
+    gulp.src(['app/components/firebase/firebase.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster-ci.firebaseio.com/'))
+        .pipe(gulp.dest('app/components/firebase'));
+    gulp.src(['tests-e2e/helpers/testHelper.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster-ci.firebaseio.com/'))
+        .pipe(gulp.dest('tests-e2e/helpers'));
+});
+
+gulp.task('firebase-qa', function() {
+    gulp.src(['app/components/firebase/firebase.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster-qa.firebaseio.com/'))
+        .pipe(gulp.dest('app/components/firebase'));
+});
+
+gulp.task('firebase-prod', function() {
+    gulp.src(['app/components/firebase/firebase.js'])
+        .pipe(replace(/https(.*)com\//g, 'https://stairmaster.firebaseio.com/'))
+        .pipe(gulp.dest('app/components/firebase'));
 });
 
 gulp.task('lint', function() {
@@ -49,12 +81,12 @@ gulp.task('minify-css-dist', function() {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('copy-bower-components', function () {
+gulp.task('copy-bower-components', function() {
     gulp.src('app/bower_components/**')
         .pipe(gulp.dest('dist/bower_components'));
 });
 
-gulp.task('copy-html-files', ['clean'], function () {
+gulp.task('copy-html-files', ['clean'], function() {
     gulp.src('app/**/*.html')
         .pipe(gulp.dest('dist/'));
 });
@@ -80,15 +112,16 @@ gulp.task('watch', function() {
     gulp.watch(['app/**/*.js', '!app/bower_components/**'], ['browserify']);
 });
 
-gulp.task('dev', ['lint', 'browserify', 'watch', 'connect']);
+gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'watch', 'connect']);
 
-gulp.task('prod', ['lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
+gulp.task('prod-local', ['firebase-dev', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
+gulp.task('snap', ['firebase-ci', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
 
 // TESTING
 
 // run unit tests once
-gulp.task('unit', function (done) {
+gulp.task('unit', function(done) {
     karma.start({
         configFile: __dirname + '/tests/karma.conf.js',
         singleRun: true
@@ -96,27 +129,14 @@ gulp.task('unit', function (done) {
 });
 
 // watch for file changes and re-run unit tests on each change
-gulp.task('tdd', function (done) {
+gulp.task('tdd', function(done) {
     karma.start({
-    configFile: __dirname + '/tests/karma.conf.js'
+        configFile: __dirname + '/tests/karma.conf.js'
     }, done);
 });
 
 // run protractor tests
-gulp.task('protractor', function (callback) {
-    gulp.src('tests-e2e/*.spec.js')
-        .pipe(angularProtractor({
-            'configFile': 'tests-e2e/protractor.conf.js',
-            'debug': false,
-            'autoStartStopServer': true
-        }))
-        .on('error', function(e) {
-            gutil.log(e);
-        })
-        .on('end', callback);
-});
-
-gulp.task('protractor-debug', function (callback) {
+gulp.task('protractor', function(callback) {
     gulp.src('tests-e2e/*.spec.js')
         .pipe(angularProtractor({
             'configFile': 'tests-e2e/protractor.conf.js',
@@ -129,10 +149,24 @@ gulp.task('protractor-debug', function (callback) {
         .on('end', callback);
 });
 
+gulp.task('protractor-snap', ['connectDist'], function() {
+    gulp.src('tests-e2e/*.spec.js')
+        .pipe(angularProtractor({
+            'configFile': 'tests-e2e/protractor.ci.conf.js',
+            'debug': true,
+            'autoStartStopServer': true
+        }))
+        .on('error', function(e) {
+            gutil.log(e);
+        })
+        .on('end', function() {
+            connect.serverClose();
+        });
+});
+
 // run all tests
 gulp.task('test', function() {
     runSequence(
-        ['unit'],
-        ['protractor']
+        ['unit'], ['protractor']
     );
 });

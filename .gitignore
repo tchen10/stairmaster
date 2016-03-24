@@ -8,3 +8,4 @@ tmp
 dist/
 app/bundle.js
 seed.json
+phantomjsdriver.log

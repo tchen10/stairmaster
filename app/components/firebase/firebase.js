@@ -8,4 +8,4 @@ angular.module('stairmaster.firebase', [
     'stairmaster.firebase.firebase-rest-service'
 ])
 
-.constant('FIREBASE_URL', 'https://stairmaster.firebaseio.com/');
+.constant('FIREBASE_URL', 'https://stairmaster-dev.firebaseio.com/');
