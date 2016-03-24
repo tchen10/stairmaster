@@ -98,10 +98,15 @@ gulp.task('copy-html-files', ['clean'], function() {
 });
 
 gulp.task('browserify', function() {
-    return browserify('app/app.js')
-        .bundle()
+    var b = browserify({
+        entries: 'app/app.js',
+        debug: true
+    });
+    return b.bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('app/'));
 });
 

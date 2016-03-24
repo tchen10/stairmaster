@@ -7,5 +7,6 @@ tmp
 .idea
 dist/
 app/bundle.js
+app/bundle.js.map
 seed.json
 phantomjsdriver.log
