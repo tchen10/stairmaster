@@ -6,6 +6,7 @@ var jshint = require('gulp-jshint');
 var uglify = require('gulp-uglify');
 var del = require('del');
 var nano = require('gulp-cssnano');
+var cleanCSS = require('gulp-clean-css');
 var angularProtractor = require('gulp-angular-protractor');
 var gutil = require('gulp-util');
 var karma = require('karma').server;
@@ -81,6 +82,12 @@ gulp.task('minify-css-dist', function() {
         .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('minify-css', function() {
+  return gulp.src(['app/**/*.css', '!./app/bower_components/**'])
+    .pipe(cleanCSS({compatibility: 'ie8'}))
+    .pipe(gulp.dest('dist/'));
+});
+
 gulp.task('copy-bower-components', function() {
     gulp.src('app/bower_components/**')
         .pipe(gulp.dest('dist/bower_components'));
@@ -116,7 +123,7 @@ gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'watch', 'connect']);
 
 gulp.task('prod-local', ['firebase-dev', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
-gulp.task('snap', ['firebase-ci', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
+gulp.task('snap', ['firebase-ci', 'lint', 'minify-css', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
 
 // TESTING
 
