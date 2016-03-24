@@ -1,0 +1,13 @@
+{
+  "firebase": "stairmaster-qa",
+  "public": "dist",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "node_modules/**",
+    "tests/**",
+    "tests-e2e/**"
+  ],
+  "cleanUrls": true,
+  "rules": "security-rules.json"
+}

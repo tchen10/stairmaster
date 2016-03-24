@@ -1,0 +1,22 @@
+{
+  "rules": {
+    ".read": true,
+    "Teams": {
+      "$team_id": {
+        "Pairs": {
+          ".indexOn": "active"
+        },
+        "Persons": {
+          ".indexOn": "active",
+          "first": {
+            ".validate": "newData.isString()"
+          },
+          "last": {
+            ".validate": "newData.isString()"
+          }
+        }
+      },
+      ".write": true
+    }
+  }
+}

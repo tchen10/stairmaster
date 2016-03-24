@@ -60,12 +60,18 @@ gulp.task('firebase-qa', function() {
     gulp.src(['app/components/firebase/firebase.js'])
         .pipe(replace(/https(.*)com\//g, 'https://stairmaster-qa.firebaseio.com/'))
         .pipe(gulp.dest('app/components/firebase'));
+    gulp.src(['firebase.json'])
+        .pipe(replace(/\"stair(.*)\"/g, '"stairmaster-qa"'))
+        .pipe(gulp.dest(''));
 });
 
 gulp.task('firebase-prod', function() {
     gulp.src(['app/components/firebase/firebase.js'])
         .pipe(replace(/https(.*)com\//g, 'https://stairmaster.firebaseio.com/'))
         .pipe(gulp.dest('app/components/firebase'));
+    gulp.src(['firebase.json'])
+        .pipe(replace(/\"stair(.*)\"/g, '"stairmaster"'))
+        .pipe(gulp.dest(''));
 });
 
 gulp.task('lint', function() {
@@ -76,9 +82,9 @@ gulp.task('lint', function() {
 });
 
 gulp.task('minify-css-dist', function() {
-  return gulp.src(['app/**/*.css', '!./app/bower_components/**'])
-    .pipe(cleanCSS({compatibility: 'ie8'}))
-    .pipe(gulp.dest('dist/'));
+    return gulp.src(['app/**/*.css', '!./app/bower_components/**'])
+        .pipe(cleanCSS({ compatibility: 'ie8' }))
+        .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-bower-components', function() {
@@ -117,6 +123,8 @@ gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'watch', 'connect']);
 gulp.task('prod-local', ['firebase-dev', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
 gulp.task('snap', ['firebase-ci', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
+
+gulp.task('qa', ['firebase-qa', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
 
 // TESTING
 
