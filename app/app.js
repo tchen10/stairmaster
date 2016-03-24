@@ -20,6 +20,15 @@ var app = angular.module('stairmaster', [
     'stairmaster.login'
 ]);
 
+app.run(['$rootScope', '$state', 'LoginService', function($rootScope, $state, LoginService) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if (toParams.teamId && LoginService.findTeamName(toParams.teamId)) {
+            $state.go('login');
+            event.preventDefault();
+        }
+    });
+}]);
+
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
         $stateProvider
