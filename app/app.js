@@ -20,14 +20,14 @@ var app = angular.module('stairmaster', [
     'stairmaster.login'
 ]);
 
-app.run(['$rootScope', '$state', 'LoginService', function($rootScope, $state, LoginService) {
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if (toParams.teamId && LoginService.findTeamName(toParams.teamId)) {
-            $state.go('login');
-            event.preventDefault();
-        }
-    });
-}]);
+// app.run(['$rootScope', '$state', 'LoginService', function($rootScope, $state, LoginService) {
+//     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+//         if (toParams.teamId && LoginService.findTeamName(toParams.teamId)) {
+//             event.preventDefault();
+//             $state.go('login');
+//         }
+//     });
+// }]);
 
 app.config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
@@ -47,7 +47,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
-                cache: false,
                 controller: 'TeamCtrl'
             })
             .state('team.addPerson', {

@@ -5,8 +5,8 @@ var Firebase = require('firebase');
 angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
 
 .service('PairsService', ['$firebaseArray', 'FirebaseService', function($firebaseArray, FirebaseService) {
-    var persons = FirebaseService.getFirebaseArray('Persons');
-    var pairs = FirebaseService.getFirebaseArray('Pairs');
+    var persons = FirebaseService.getPerTeamFirebaseArray('Persons');
+    var pairs = FirebaseService.getPerTeamFirebaseArray('Pairs');
 
     return {
         updatePairStatus: function(active, person) {

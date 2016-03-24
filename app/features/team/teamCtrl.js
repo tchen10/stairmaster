@@ -7,8 +7,8 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
 .controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', 'PairsService', 'FirebaseService', '$stateParams', function($scope, $state, $firebaseArray, PairsService, FirebaseService, $stateParams) {
 
     $scope.teamId = $stateParams.teamId;
-    $scope.persons = FirebaseService.getFirebaseArray('Persons');
-    $scope.pairs = FirebaseService.getFirebaseArray('Pairs');
+    $scope.persons = FirebaseService.getPerTeamFirebaseArray('Persons');
+    $scope.pairs = FirebaseService.getPerTeamFirebaseArray('Pairs');
 
     $scope.addPerson = function() {
         var timestamp = FirebaseService.getTimestamp();

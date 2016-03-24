@@ -14,7 +14,7 @@ describe('stairmaster.team module', function() {
                 updatePairStatus: function(active, person) {}
             };
             FirebaseServiceMock = {
-                getFirebaseArray: function() {},
+                getPerTeamFirebaseArray: function() {},
                 add: function() {},
                 getTimestamp: function() {},
                 getRecord: function(id) {},

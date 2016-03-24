@@ -14,7 +14,7 @@ describe('stairmaster.pairs module', function() {
             });
 
             FirebaseServiceMock = {
-                getFirebaseArray: function() {
+                getPerTeamFirebaseArray: function() {
                     return [];
                 },
                 getRecord: function() {},
@@ -93,7 +93,7 @@ describe('stairmaster.pairs module', function() {
 
         beforeEach(function() {
             firebaseServiceMock = {
-                getFirebaseArray: function() {},
+                getPerTeamFirebaseArray: function() {},
                 getFirebaseId: function() {},
                 getRecord: function() {},
                 save: function() {},

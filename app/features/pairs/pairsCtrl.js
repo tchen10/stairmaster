@@ -5,8 +5,8 @@ var Firebase = require('firebase');
 angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
 
 .controller('PairsCtrl', ['$scope', '$firebaseArray', 'FirebaseService', 'FirebaseRestService', 'StairsFactory', function($scope, $firebaseArray, FirebaseService, FirebaseRestService, StairsFactory) {
-    var persons = FirebaseService.getFirebaseArray('Persons');
-    var pairs = FirebaseService.getFirebaseArray('Pairs');
+    var persons = FirebaseService.getPerTeamFirebaseArray('Persons');
+    var pairs = FirebaseService.getPerTeamFirebaseArray('Pairs');
 
     FirebaseRestService.getActivePersons().then(function(response) {
         $scope.activePersons = response.data;
