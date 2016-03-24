@@ -126,6 +126,8 @@ gulp.task('snap', ['firebase-ci', 'lint', 'minify-css-dist', 'browserify-dist', 
 
 gulp.task('qa', ['firebase-qa', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
 
+gulp.task('prod', ['firebase-prod', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components']);
+
 // TESTING
 
 // run unit tests once
