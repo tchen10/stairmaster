@@ -7,6 +7,11 @@ describe('settings scenarios', function() {
     var testTeamName = 'settingsScenario' + Date.now();
     var firebaseRef = helper.createTeam(testTeamName);
 
+    afterEach(function() {
+        var ref = helper.getFirebase('Teams/' + testTeamName);
+        helper.clearFirebaseRef(ref);
+    });
+
     describe('| people management', function() {
 
         beforeEach(function() {

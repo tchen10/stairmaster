@@ -12,6 +12,11 @@ describe('stairs scenarios', function() {
         browser.get('index.html#' + testTeamName + '/pairstairs');
     });
 
+    afterEach(function() {
+        var ref = helper.getFirebase('Teams/' + testTeamName);
+        helper.clearFirebaseRef(ref);
+    });
+
     describe('| stairs', function() {
 
         beforeEach(function() {

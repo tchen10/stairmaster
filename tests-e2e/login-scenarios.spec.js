@@ -6,6 +6,11 @@ describe('login scenarios', function() {
     var testTeamName = 'loginScenario' + Date.now();
     var firebaseRef = helper.createTeam(testTeamName);
 
+    afterEach(function() {
+        var ref = helper.getFirebase('Teams/' + testTeamName);
+        helper.clearFirebaseRef(ref);
+    });
+
     describe('create a team', function() {
         var teamName = 'loginScenarioNewTeam' + Date.now();
         var createTeamButton = element(by.id('createTeamButton'));
