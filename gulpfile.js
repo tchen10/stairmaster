@@ -97,23 +97,26 @@ gulp.task('copy-html-files', ['clean'], function() {
         .pipe(gulp.dest('dist/'));
 });
 
-var bdev = watchify(browserify({
-    entries: 'app/app.js',
-    debug: true
-}));
+gulp.task('browserify-watch', function() {
+    var b = watchify(browserify({
+        entries: 'app/app.js',
+        debug: true
+    }));
 
-gulp.task('browserify', bundle);
-bdev.on('update', bundle);
-bdev.on('log', gutil.log);
+    function bundle() {
+        return b.bundle()
+            .pipe(source('bundle.js'))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({ loadMaps: true }))
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('app/'));
+    }
 
-function bundle() {
-    return bdev.bundle()
-        .pipe(source('bundle.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('app/'));
-}
+    b.on('update', bundle);
+    b.on('log', gutil.log);
+
+    return bundle();
+});
 
 gulp.task('browserify-dist', function() {
     var b = browserify({
@@ -126,7 +129,7 @@ gulp.task('browserify-dist', function() {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'connect']);
+gulp.task('dev', ['firebase-dev', 'lint', 'browserify-watch', 'connect']);
 
 gulp.task('prod-local', ['firebase-dev', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
@@ -167,6 +170,22 @@ gulp.task('protractor', function(callback) {
         .on('end', callback);
 });
 
+
+// run all tests
+gulp.task('test', function() {
+    runSequence(
+        ['unit'], ['protractor']
+    );
+});
+
+// CI commands
+gulp.task('karma-snap', function(done) {
+    karma.start({
+        configFile: __dirname + '/tests/karma.ci.conf.js',
+        singleRun: true
+    }, done);
+});
+
 gulp.task('protractor-snap', ['connectDist'], function() {
     gulp.src('tests-e2e/*.spec.js')
         .pipe(angularProtractor({
@@ -181,11 +200,4 @@ gulp.task('protractor-snap', ['connectDist'], function() {
         .on('end', function() {
             connect.serverClose();
         });
-});
-
-// run all tests
-gulp.task('test', function() {
-    runSequence(
-        ['unit'], ['protractor']
-    );
 });
