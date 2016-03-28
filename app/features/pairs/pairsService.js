@@ -8,6 +8,17 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
     var persons = FirebaseService.getPerTeamFirebaseArray('Persons');
     var pairs = FirebaseService.getPerTeamFirebaseArray('Pairs');
 
+    var personsRef = FirebaseService.getPerTeamFirebase('Persons');
+    var pairsRef = FirebaseService.getPerTeamFirebase('Pairs');
+
+    pairsRef.on('child_added', function(snapshot) {
+        var pair = snapshot.val();
+        var person1Id = pair.person1.id;
+        var person2Id = pair.person2.id;
+        personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
+        personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
+    });
+
     return {
         updatePairStatus: function(active, person) {
             var that = this;

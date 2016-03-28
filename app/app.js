@@ -39,7 +39,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 url: '/settings',
                 parent: 'common',
                 templateUrl: 'features/team/team.html',
-                controller: 'TeamCtrl'
+                controller: 'TeamCtrl',
+                resolve: {
+                    teamId: function(FirebaseService, $stateParams) {
+                        return FirebaseService.setTeamId($stateParams.teamId);
+                    }
+                }
             })
             .state('team.addPerson', {
                 url: '/add',

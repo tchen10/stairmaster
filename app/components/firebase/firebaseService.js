@@ -6,24 +6,26 @@ angular.module('stairmaster.firebase.firebase-service', [require('angularfire')]
 
 .service('FirebaseService', ['$firebaseArray', 'FIREBASE_URL', '$q', '$stateParams', function($firebaseArray, FIREBASE_URL, $q, $stateParams) {
 
-    var teamRoute = 'Teams/' + $stateParams.teamId + '/';
-    var personsRef = new Firebase(FIREBASE_URL + teamRoute + 'Persons');
-    var pairsRef = new Firebase(FIREBASE_URL + teamRoute + 'Pairs');
-
-    pairsRef.on('child_added', function(snapshot) {
-        var pair = snapshot.val();
-        var person1Id = pair.person1.id;
-        var person2Id = pair.person2.id;
-        personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
-        personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
-    });
+    var teamId;
 
     return {
+        getTeamId: function() {
+            return teamId;
+        },
+        setTeamId: function(params) {
+            teamId = params;
+        },
+        getTeamRoute: function() {
+            return 'Teams/' + this.getTeamId() + '/';
+        },
         getFirebase: function(parameters) {
             return new Firebase(FIREBASE_URL + parameters);
         },
+        getPerTeamFirebase: function(parameters) {
+            return new Firebase(FIREBASE_URL + this.getTeamRoute() + parameters);
+        },
         getPerTeamFirebaseArray: function(parameters) {
-            var ref = new Firebase(FIREBASE_URL + teamRoute + parameters);
+            var ref = new Firebase(FIREBASE_URL + this.getTeamRoute() + parameters);
             return $firebaseArray(ref);
         },
         getFirebaseArray: function(parameters) {
