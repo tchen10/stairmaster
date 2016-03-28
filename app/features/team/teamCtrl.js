@@ -1,10 +1,8 @@
 'use strict';
 
-var Firebase = require('firebase');
+angular.module('stairmaster.team.team-controller', [])
 
-angular.module('stairmaster.team.team-controller', [require('angularfire')])
-
-.controller('TeamCtrl', ['$scope', '$state', '$firebaseArray', 'PairsService', 'FirebaseService', '$stateParams', function($scope, $state, $firebaseArray, PairsService, FirebaseService, $stateParams) {
+.controller('TeamCtrl', ['$scope', '$state', 'PairsService', 'FirebaseService', '$stateParams', 'TeamService', function($scope, $state, PairsService, FirebaseService, $stateParams, TeamService) {
 
     $scope.teamId = $stateParams.teamId;
     $scope.persons = FirebaseService.getPerTeamFirebaseArray('Persons');
@@ -19,10 +17,15 @@ angular.module('stairmaster.team.team-controller', [require('angularfire')])
             timestamp: timestamp
         };
 
-        FirebaseService.add($scope.persons, person)
-            .then(function(ref) {
-                PairsService.generatePairs($scope.pairs, $scope.persons);
-            });
+        $scope.firstError = TeamService.validateName($scope.person.first);
+        $scope.lastError = TeamService.validateName($scope.person.last);
+
+        if (!$scope.firstError && !$scope.lastError) {
+            FirebaseService.add($scope.persons, person)
+                .then(function(ref) {
+                    PairsService.generatePairs($scope.pairs, $scope.persons);
+                });
+        }
 
         $scope.person.first = '';
         $scope.person.last = '';

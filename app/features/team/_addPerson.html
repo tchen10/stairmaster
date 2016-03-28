@@ -4,10 +4,12 @@
         <div class="form-group">
             <label for="personFirst">First Name</label>
             <input type="text" ng-model="person.first" class="form-control" id="personFirst" />
+            <span id="first-error" class="error">{{ firstError }}</span>
         </div>
         <div class="form-group">
             <label for="personLast">Last Name</label>
             <input type="text" ng-model="person.last" class="form-control" id="personLast" />
+            <span id="last-error" class="error">{{ lastError }}</span>
         </div>
         <div>
             <a id="cancelAddPerson" ui-sref="team">Cancel</a>

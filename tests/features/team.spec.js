@@ -4,7 +4,7 @@ describe('stairmaster.team module', function() {
     beforeEach(module('stairmaster.team'));
 
     describe('team controller', function() {
-        var teamCtrl, scope, state, stateParams, PairsServiceMock, FirebaseServiceMock;
+        var teamCtrl, scope, state, stateParams, PairsServiceMock, FirebaseServiceMock, TeamServiceMock;
 
         beforeEach(module('stairmaster.team.team-controller'));
 
@@ -24,6 +24,9 @@ describe('stairmaster.team module', function() {
             state = {
                 go: function() {}
             };
+            TeamServiceMock = {
+                validateName: function() {}
+            };
 
             stateParams = {
                 teamId: 'teamId'
@@ -36,7 +39,9 @@ describe('stairmaster.team module', function() {
                     $state: state,
                     PairsService: PairsServiceMock,
                     FirebaseService: FirebaseServiceMock,
-                    $stateParams: stateParams });
+                    $stateParams: stateParams,
+                    TeamService: TeamServiceMock
+                });
             });
 
         });
@@ -58,11 +63,22 @@ describe('stairmaster.team module', function() {
                 scope.person.last = 'Panda';
             });
 
-            it('should generate pairs when person is added', function() {
+            it('should generate pairs when names are valid', function() {
+                spyOn(TeamServiceMock, 'validateName').and.returnValue('');
+
                 scope.addPerson();
                 scope.$apply();
 
                 expect(PairsServiceMock.generatePairs).toHaveBeenCalled();
+            });
+
+            it('should not generate pairs when names are invalid', function() {
+                spyOn(TeamServiceMock, 'validateName').and.returnValue('errors');
+
+                scope.addPerson();
+                scope.$apply();
+
+                expect(PairsServiceMock.generatePairs).not.toHaveBeenCalled();
             });
 
             it('should clear person fields after adding person', function() {
@@ -72,6 +88,16 @@ describe('stairmaster.team module', function() {
                 expect(scope.person.first).toBe('');
                 expect(scope.person.last).toBe('');
             });
+
+            it('should set error when name is invalid', function() {
+                spyOn(TeamServiceMock, 'validateName').and.returnValues('first error', 'last error');
+                scope.addPerson();
+                scope.$apply();
+
+                expect(scope.firstError).toBe('first error');
+                expect(scope.lastError).toBe('last error');
+            });
+
         });
 
         describe('.editPerson', function() {
@@ -174,8 +200,8 @@ describe('stairmaster.team module', function() {
                     return deferred.promise;
                 });
 
-                scope.persons = [1,2,3];
-                scope.personToUpdate = {id: 'id'};
+                scope.persons = [1, 2, 3];
+                scope.personToUpdate = { id: 'id' };
             });
 
             it('should deactivate person when person is active', function() {
@@ -204,5 +230,44 @@ describe('stairmaster.team module', function() {
             });
 
         });
+    });
+
+    describe('team service', function() {
+        var teamService;
+
+        beforeEach(function() {
+            module('stairmaster.team.team-service');
+
+            inject(function(_TeamService_) {
+                teamService = _TeamService_;
+            });
+        });
+
+        describe('.validateName', function() {
+            it('should return an error when name is less than 1 character', function() {
+                var name = '';
+                var error = teamService.validateName(name);
+                expect(error).toBe('Name must be at least 1 character');
+            });
+
+            it('should return an error when name has spaces', function() {
+                var name = 'betty boop';
+                var error = teamService.validateName(name);
+                expect(error).toBe('Name can only have alphanumeric characters');
+            });
+
+            it('should return an error when name has special characters', function() {
+                var name = 'betty!';
+                var error = teamService.validateName(name);
+                expect(error).toBe('Name can only have alphanumeric characters');
+            });
+
+            it('should not return an error when name is valid', function() {
+                var name = 'betty';
+                var error = teamService.validateName(name);
+                expect(error).toBe('');
+            });
+        });
+
     });
 });
