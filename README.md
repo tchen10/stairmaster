@@ -1,5 +1,7 @@
 # StairMaster
 
+[![Build Status](https://snap-ci.com/tchen10/stairmaster/branch/master/build_image)](https://snap-ci.com/tchen10/stairmaster/branch/master)
+
 ### Install Dependencies
 
 We have preconfigured `npm` to automatically run `bower` so we can simply do:
