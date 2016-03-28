@@ -111,11 +111,13 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('browserify-dist', function() {
-    return browserify('app/app.js')
-        .bundle()
+    var b = browserify({
+        entries: 'app/app.js'
+    });
+    return b.bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        .pipe(uglify())
+        .pipe(uglify({ mangle: false }))
         .pipe(gulp.dest('dist/'));
 });
 

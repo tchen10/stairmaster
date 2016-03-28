@@ -9,10 +9,10 @@
         "Persons": {
           ".indexOn": "active",
           "first": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length > 1"
           },
           "last": {
-            ".validate": "newData.isString()"
+            ".validate": "newData.isString() && newData.val().length > 1"
           }
         }
       },
