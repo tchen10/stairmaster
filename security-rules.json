@@ -1,22 +1,22 @@
 {
   "rules": {
     ".read": true,
-    "Teams": {
-      "$team_id": {
-        "Pairs": {
-          ".indexOn": "active"
-        },
-        "Persons": {
-          ".indexOn": "active",
-          "first": {
-            ".validate": "newData.isString() && newData.val().length > 1"
+      "Teams": {
+        "$team_id": {
+          "Pairs": {
+            ".indexOn": "active"
           },
-          "last": {
-            ".validate": "newData.isString() && newData.val().length > 1"
+          "Persons": {
+            ".indexOn": "active",
+            "first": {
+              ".validate": "newData.isString() && newData.val().matches(/[A-Za-z]+/)"
+            },
+            "last": {
+              ".validate": "newData.isString() &&newData.val().matches(/[A-Za-z]+/)"
+            }
           }
-        }
-      },
-      ".write": true
-    }
+        },
+        ".write": true
+      }
   }
 }
