@@ -1,3 +1,7 @@
+/************************************************
+Login View
+*************************************************/
+
 .login-box {
     margin-bottom: 80px;
 }
@@ -5,6 +9,10 @@
 .error {
     color: red;
 }
+
+/************************************************
+Stairs View
+*************************************************/
 
 .stair-table {
     border-collapse: collapse;
@@ -41,6 +49,10 @@
     cursor: pointer;
 }
 
+/************************************************
+ Settings View
+*************************************************/
+
 .inactive li {
     font-style: italic;
     color: #A9A9A9;
@@ -56,5 +68,13 @@
 
 .deleteButtonPanel {
     text-align: right;
+    margin-top: 20px;
+}
+
+.confirm-delete .modal-content {
+    padding: 50px;
+}
+
+.confirm-delete .confirm-delete-buttons {
     margin-top: 20px;
 }

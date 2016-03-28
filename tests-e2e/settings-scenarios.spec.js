@@ -58,9 +58,9 @@ describe('settings scenarios', function() {
                 expect(pairsList.count()).toEqual(1);
 
                 //delete
-                var deleteButton = element.all(by.id('deletePerson')).last();
                 browser.executeScript("arguments[0].click();", editButton.getWebElement());
-                deleteButton.click();
+                element(by.id('confirmDelete')).click();
+                element(by.id('deletePerson')).click();
                 expect(personList.count()).toEqual(1);
                 expect(pairsList.count()).toEqual(0);
             });

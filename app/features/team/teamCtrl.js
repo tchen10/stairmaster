@@ -52,7 +52,9 @@ angular.module('stairmaster.team.team-controller', [])
 
     $scope.deletePerson = function() {
         var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.id);
-        FirebaseService.remove($scope.persons, person);
+        FirebaseService.remove($scope.persons, person).then(function() {
+            $state.go('team');
+        });
     };
 
     $scope.deactivatePerson = function(active) {

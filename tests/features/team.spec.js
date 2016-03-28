@@ -165,22 +165,36 @@ describe('stairmaster.team module', function() {
         });
 
         describe('deletePerson', function() {
-            var person;
+            var person, deferred;
 
             beforeEach(function() {
+                inject(function($q) {
+                    deferred = $q.defer();
+                });
+
                 person = { first: 'Jim' };
                 spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(person);
-                spyOn(FirebaseServiceMock, 'remove');
+                spyOn(FirebaseServiceMock, 'remove').and.callFake(function() {
+                    deferred.resolve();
+                    return deferred.promise;
+                });
+
+                spyOn(state, 'go');
 
                 scope.persons = [1, 2, 3];
                 scope.pairs = [4, 5, 6];
                 scope.personToUpdate = { id: 'id' };
 
                 scope.deletePerson();
+                scope.$apply();
             });
 
             it('should remove person from persons array', function() {
                 expect(FirebaseServiceMock.remove).toHaveBeenCalledWith(scope.persons, person);
+            });
+
+            it('should redirect to team', function() {
+                expect(state.go).toHaveBeenCalledWith('team');
             });
         });
 
