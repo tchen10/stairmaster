@@ -1,7 +1,9 @@
 'use strict';
 
-require('./navigationCtrl.js');
+require('./navigationCtrl');
+require('./authService');
 
 angular.module('stairmaster.navigation', [
-  'stairmaster.navigation.navigation-controller'
+  'stairmaster.navigation.navigation-controller',
+  'stairmaster.navigation.auth-service'
 ]);
