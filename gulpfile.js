@@ -11,11 +11,11 @@ var gutil = require('gulp-util');
 var karma = require('karma').server;
 var runSequence = require('run-sequence');
 var browserify = require('browserify');
+var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var replace = require('gulp-replace');
-
 
 gulp.task('connect', function() {
     connect.server({
@@ -97,18 +97,23 @@ gulp.task('copy-html-files', ['clean'], function() {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('browserify', function() {
-    var b = browserify({
-        entries: 'app/app.js',
-        debug: true
-    });
-    return b.bundle()
+var bdev = watchify(browserify({
+    entries: 'app/app.js',
+    debug: true
+}));
+
+gulp.task('browserify', bundle);
+bdev.on('update', bundle);
+bdev.on('log', gutil.log);
+
+function bundle() {
+    return bdev.bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('app/'));
-});
+}
 
 gulp.task('browserify-dist', function() {
     var b = browserify({
@@ -121,11 +126,7 @@ gulp.task('browserify-dist', function() {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('watch', function() {
-    gulp.watch(['app/**/*.js', '!app/bower_components/**'], ['browserify']);
-});
-
-gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'watch', 'connect']);
+gulp.task('dev', ['firebase-dev', 'lint', 'browserify', 'connect']);
 
 gulp.task('prod-local', ['firebase-dev', 'lint', 'minify-css-dist', 'browserify-dist', 'copy-html-files', 'copy-bower-components', 'connectDist']);
 
