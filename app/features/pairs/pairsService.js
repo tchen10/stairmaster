@@ -19,6 +19,14 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
         personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
     });
 
+    personsRef.on('child_removed', function(oldChildSnapshot) {
+        var person = oldChildSnapshot.val();
+        var pairs = person.pairs;
+        angular.forEach(pairs, function(value, key) {
+            pairsRef.child(key).remove();
+        });
+    });
+
     return {
         updatePairStatus: function(active, person) {
             var that = this;
