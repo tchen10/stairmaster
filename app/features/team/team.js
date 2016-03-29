@@ -19,6 +19,11 @@ angular.module('stairmaster.team', [
                 url: '/info',
                 templateUrl: 'features/persons/_infoPerson.html',
                 controller: 'PersonCtrl'
+            })
+            .state('team.pairHistory', {
+                url: '/pairhistory',
+                templateUrl: 'features/pairs/_pairHistory.html',
+                controller: 'PairsCtrl'
             });
     }
 ]);

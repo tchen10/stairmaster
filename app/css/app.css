@@ -65,7 +65,7 @@ Stairs View
     font-style: italic;
 }
 
-.person-list .person:hover {
+.person-list .person:hover, .pairs-list .pair:hover {
     cursor: pointer;
     text-decoration: underline;
 }

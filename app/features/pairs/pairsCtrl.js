@@ -34,6 +34,11 @@ angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
         var pair = FirebaseService.getRecord(pairs, id);
         return pair.days;
     };
+
+    $scope.getPerson = function(id) {
+        var person = FirebaseService.getRecord(persons, id);
+        return person;
+    };
 }])
 
 .filter('reverse', function() {

@@ -1,0 +1,15 @@
+<h3>Pair History</h3>
+<div class="well">
+    <div>
+        <h4>{{ getPerson(pairHistory.person1).first }} {{ getPerson(pairHistory.person1).last }}</h4>
+    </div>
+    <div>
+        <h4>{{ getPerson(pairHistory.person2).first }} {{ getPerson(pairHistory.person2).last }}</h4>
+    </div>
+    <div>
+        Status: {{ pairHistory.active ? "Active" : "Inactive" }}
+    </div>
+    <div>
+        Days: {{ pairHistory.days }}
+    </div>
+</div>
