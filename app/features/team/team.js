@@ -7,3 +7,4 @@ angular.module('stairmaster.team', [
     'stairmaster.team.team-controller',
     'stairmaster.team.team-service'
 ]);
+

@@ -67,4 +67,19 @@ angular.module('stairmaster.team.team-controller', [])
             });
     };
 
+    $scope.viewPerson = function(id) {
+        $scope.personInfo = FirebaseService.getRecord($scope.persons, id);
+        $scope.active = $scope.personInfo.active ? 'Active' : 'Inactive';
+    };
+
+    $scope.getPairingDays = function(id) {
+        var pair = FirebaseService.getRecord($scope.pairs, id);
+        return pair.days;
+    };
+
+    $scope.getPairStatus = function(id) {
+        var pair = FirebaseService.getRecord($scope.pairs, id);
+        return pair.active ? 'Active' : 'Inactive';
+    };
+
 }]);

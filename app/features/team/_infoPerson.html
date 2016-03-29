@@ -1,0 +1,24 @@
+<h3>Info</h3>
+<div class="well">
+    <div>
+        <h4>{{ personInfo.first }} {{ personInfo.last }}</h4>
+    </div>
+    <div>
+        Status: {{ active }}
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+                <th>Pair</th>
+                <th>Days</th>
+                <th>Status</th>
+            </thead>
+            <tr ng-repeat="(key, value) in personInfo.pairs">
+                <td> {{ value.person1.person.first }} + {{ value.person2.person.first }}
+                </td>
+                <td> {{ getPairingDays(key) }} </td>
+                <td> {{ getPairStatus(key) }} </td>
+            </tr>
+        </table>
+    </div>
+</div>

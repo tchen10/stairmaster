@@ -10,6 +10,7 @@ Login View
     color: red;
 }
 
+
 /************************************************
 Stairs View
 *************************************************/
@@ -49,13 +50,24 @@ Stairs View
     cursor: pointer;
 }
 
+
 /************************************************
  Settings View
 *************************************************/
 
-.inactive li {
-    font-style: italic;
+.inactive .person-link {
     color: #A9A9A9;
+    font-style: italic;
+}
+
+.inactive li {
+    color: #A9A9A9;
+    font-style: italic;
+}
+
+.person-list .person:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .person-list .person:hover .editPersonButton {

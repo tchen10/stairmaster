@@ -56,6 +56,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 templateUrl: 'features/team/_editPerson.html',
                 controller: 'TeamCtrl'
             })
+            .state('team.infoPerson', {
+                url: '/info',
+                templateUrl: 'features/team/_infoPerson.html',
+                controller: 'TeamCtrl'
+            })
             .state('pairstairs', {
                 url: '/pairstairs',
                 parent: 'common',
