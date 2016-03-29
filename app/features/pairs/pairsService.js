@@ -23,6 +23,10 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
         var person = oldChildSnapshot.val();
         var pairs = person.pairs;
         angular.forEach(pairs, function(value, key) {
+            var person1Id = value.person1.id;
+            var person2Id = value.person2.id;
+            personsRef.child(person1Id + '/pairs/' + key).remove();
+            personsRef.child(person2Id + '/pairs/' + key).remove();
             pairsRef.child(key).remove();
         });
     });
