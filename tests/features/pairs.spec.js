@@ -268,20 +268,8 @@ describe('stairmaster.pairs module', function() {
 
             it('should add pairs to database', function() {
                 expect(firebaseServiceMock.add).toHaveBeenCalledWith(pairs, {
-                    person1: {
-                        id: 'monkey',
-                        person: {
-                            first: 'firstMonkey',
-                            last: 'lastMonkey'
-                        }
-                    },
-                    person2: {
-                        id: 'tiger',
-                        person: {
-                            first: 'firstTiger',
-                            last: 'lastTiger'
-                        }
-                    },
+                    person1: 'monkey',
+                    person2: 'tiger',
                     days: 0,
                     active: true
                 });

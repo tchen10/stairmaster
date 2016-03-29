@@ -13,8 +13,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
 
     pairsRef.on('child_added', function(snapshot) {
         var pair = snapshot.val();
-        var person1Id = pair.person1.id;
-        var person2Id = pair.person2.id;
+        var person1Id = pair.person1;
+        var person2Id = pair.person2;
         personsRef.child(person1Id + '/pairs/' + snapshot.key()).set(pair);
         personsRef.child(person2Id + '/pairs/' + snapshot.key()).set(pair);
     });
@@ -23,8 +23,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
         var person = oldChildSnapshot.val();
         var pairs = person.pairs;
         angular.forEach(pairs, function(value, key) {
-            var person1Id = value.person1.id;
-            var person2Id = value.person2.id;
+            var person1Id = value.person1;
+            var person2Id = value.person2;
             personsRef.child(person1Id + '/pairs/' + key).remove();
             personsRef.child(person2Id + '/pairs/' + key).remove();
             pairsRef.child(key).remove();
@@ -69,20 +69,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var active = that._setPairStatus(person1, person2);
 
             var pair = {
-                person1: {
-                    id: person1Id,
-                    person: {
-                        first: person1.first,
-                        last: person1.last
-                    }
-                },
-                person2: {
-                    id: person2Id,
-                    person: {
-                        first: person2.first,
-                        last: person2.last
-                    }
-                },
+                person1: person1Id,
+                person2: person2Id,
                 days: 0,
                 active: active
             };

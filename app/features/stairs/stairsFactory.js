@@ -28,7 +28,7 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
                         var pairId = pairKey;
                         row.name = person.first;
                         var pairIdentifier = 'pair' + pairNumber;
-                        if (pair.person1.id === personId) {
+                        if (pair.person1 === personId) {
                             row.pairs[pairIdentifier] = { id: pairId };
                             pairNumber++;
                             delete pairs[pair];

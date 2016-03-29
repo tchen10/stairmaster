@@ -26,52 +26,16 @@ describe('stairmaster.stairs.module', function() {
             beforeEach(function() {
                 pairs = {
                     'pair1Id': {
-                        'person1': {
-                            'id': 'michaelId',
-                            'person': {
-                                'first': 'Michael',
-                                'last': 'Scott'
-                            }
-                        },
-                        'person2': {
-                            'id': 'jimId',
-                            'person': {
-                                'first': 'Jim',
-                                'last': 'Halpert'
-                            }
-                        }
+                        'person1': 'michaelId',
+                        'person2': 'jimId'
                     },
                     'pair2Id': {
-                        'person1': {
-                            'id': 'michaelId',
-                            'person': {
-                                'first': 'Michael',
-                                'last': 'Scott'
-                            }
-                        },
-                        'person2': {
-                            'id': 'pamId',
-                            'person': {
-                                'first': 'Pam',
-                                'last': 'Beesley'
-                            }
-                        }
+                        'person1': 'michaelId',
+                        'person2': 'pamId'
                     },
                     'pair3Id': {
-                        'person1': {
-                            'id': 'jimId',
-                            'person': {
-                                'first': 'Jim',
-                                'last': 'Halpert'
-                            }
-                        },
-                        'person2': {
-                            'id': 'pamId',
-                            'person': {
-                                'first': 'Pam',
-                                'last': 'Beesley'
-                            }
-                        }
+                        'person1': 'jimId',
+                        'person2': 'pamId'
                     }
                 };
 
@@ -81,36 +45,12 @@ describe('stairmaster.stairs.module', function() {
                         'last': 'Scott',
                         'pairs': {
                             'pair1Id': {
-                                'person1': {
-                                    'id': 'michaelId',
-                                    'person': {
-                                        'first': 'Michael',
-                                        'last': 'Scott'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'jimId',
-                                    'person': {
-                                        'first': 'Jim',
-                                        'last': 'Halpert'
-                                    }
-                                }
+                                'person1': 'michaelId',
+                                'person2': 'jimId'
                             },
                             'pair2Id': {
-                                'person1': {
-                                    'id': 'michaelId',
-                                    'person': {
-                                        'first': 'Michael',
-                                        'last': 'Scott'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'pamId',
-                                    'person': {
-                                        'first': 'Pam',
-                                        'last': 'Beesley'
-                                    }
-                                }
+                                'person1': 'michaelId',
+                                'person2': 'pamId'
                             }
                         }
                     },
@@ -119,38 +59,12 @@ describe('stairmaster.stairs.module', function() {
                         'last': 'Halpert',
                         'pairs': {
                             'pair1Id': {
-                                'person1': {
-                                    'id': 'person1Id',
-                                    'person': {
-                                        'first': 'Michael',
-                                        'last': 'Scott'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'jimId',
-                                    'person': {
-                                        'first': 'Jim',
-                                        'last': 'Halpert'
-                                    }
-                                }
+                                'person1': 'person1Id',
+                                'person2': 'jimId'
                             },
                             'pair3Id': {
-                                'active': true,
-                                'days': 1,
-                                'person1': {
-                                    'id': 'jimId',
-                                    'person': {
-                                        'first': 'Jim',
-                                        'last': 'Halpert'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'pamId',
-                                    'person': {
-                                        'first': 'Pam',
-                                        'last': 'Beesley'
-                                    }
-                                }
+                                'person1': 'jimId',
+                                'person2': 'pamId'
                             }
                         }
                     },
@@ -159,36 +73,12 @@ describe('stairmaster.stairs.module', function() {
                         'last': 'Beesley',
                         'pairs': {
                             'pair2Id': {
-                                'person1': {
-                                    'id': 'person1Id',
-                                    'person': {
-                                        'first': 'Michael',
-                                        'last': 'Scott'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'pamId',
-                                    'person': {
-                                        'first': 'Pam',
-                                        'last': 'Beesley'
-                                    }
-                                }
+                                'person1': 'person1Id',
+                                'person2': 'pamId'
                             },
                             'pair3Id': {
-                                'person1': {
-                                    'id': 'jimId',
-                                    'person': {
-                                        'first': 'Jim',
-                                        'last': 'Kurutin'
-                                    }
-                                },
-                                'person2': {
-                                    'id': 'pamId',
-                                    'person': {
-                                        'first': 'Pam',
-                                        'last': 'Beesley'
-                                    }
-                                }
+                                'person1': 'jimId',
+                                'person2': 'pamId'
                             }
                         }
                     }
