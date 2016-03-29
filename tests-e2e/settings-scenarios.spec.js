@@ -59,13 +59,22 @@ describe('settings scenarios', function() {
                 expect(personList.count()).toEqual(2);
                 expect(pairsList.count()).toEqual(1);
 
+
+                // add another person and check unique pairs
+                element(by.id('addPersonForm')).click();
+                element(by.model('person.first')).sendKeys('Marquis');
+                element(by.model('person.last')).sendKeys('Lafayette');
+                element(by.id('addPersonButton')).click();
+                expect(personList.count()).toEqual(3);
+                expect(pairsList.count()).toEqual(3);
+
                 //delete
                 viewPerson.click();
                 editButton.click();
                 element(by.id('confirmDelete')).click();
                 element(by.id('deletePerson')).click();
-                expect(personList.count()).toEqual(1);
-                expect(pairsList.count()).toEqual(0);
+                expect(personList.count()).toEqual(2);
+                expect(pairsList.count()).toEqual(1);
             });
         });
 
