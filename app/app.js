@@ -51,12 +51,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 templateUrl: 'features/team/_addPerson.html',
                 controller: 'TeamCtrl'
             })
-            .state('team.editPerson', {
-                url: '/edit',
-                templateUrl: 'features/team/_editPerson.html',
-                controller: 'TeamCtrl'
-            })
-            .state('team.infoPerson', {
+            .state('team.info', {
                 url: '/info',
                 templateUrl: 'features/team/_infoPerson.html',
                 controller: 'TeamCtrl'

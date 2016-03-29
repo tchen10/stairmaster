@@ -46,7 +46,7 @@ angular.module('stairmaster.team.team-controller', [])
         person.last = $scope.personToUpdate.last;
         FirebaseService.save($scope.persons, person)
             .then(function() {
-                $state.go('team');
+                $state.go('team.info');
             });
     };
 
@@ -63,13 +63,12 @@ angular.module('stairmaster.team.team-controller', [])
         FirebaseService.save($scope.persons, person)
             .then(function() {
                 PairsService.updatePairStatus(active, person);
-                $state.go('team');
+                $scope.personToUpdate.active = !active;
             });
     };
 
     $scope.viewPerson = function(id) {
         $scope.personInfo = FirebaseService.getRecord($scope.persons, id);
-        $scope.active = $scope.personInfo.active ? 'Active' : 'Inactive';
     };
 
     $scope.getPairingDays = function(id) {

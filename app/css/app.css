@@ -70,17 +70,20 @@ Stairs View
     text-decoration: underline;
 }
 
-.person-list .person:hover .editPersonButton {
-    visibility: visible;
+.editPersonButton {
+    float: right;
 }
 
-.person-list .editPersonButton {
-    visibility: hidden;
+.deactivate-button {
+    cursor: pointer;
 }
 
-.deleteButtonPanel {
-    text-align: right;
-    margin-top: 20px;
+.person-options {
+    margin: 10px 0;
+}
+
+.person-options a {
+    cursor: pointer;
 }
 
 .confirm-delete .modal-content {
