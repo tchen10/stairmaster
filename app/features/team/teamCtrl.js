@@ -31,17 +31,8 @@ angular.module('stairmaster.team.team-controller', [])
         $scope.person.last = '';
     };
 
-    $scope.editPerson = function(id) {
-        var person = FirebaseService.getRecord($scope.persons, id);
-        $scope.personToUpdate = {};
-        $scope.personToUpdate.id = person.$id;
-        $scope.personToUpdate.first = person.first;
-        $scope.personToUpdate.last = person.last;
-        $scope.personToUpdate.active = person.active;
-    };
-
     $scope.updatePerson = function() {
-        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.id);
+        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.$id);
         person.first = $scope.personToUpdate.first;
         person.last = $scope.personToUpdate.last;
         FirebaseService.save($scope.persons, person)
@@ -51,14 +42,14 @@ angular.module('stairmaster.team.team-controller', [])
     };
 
     $scope.deletePerson = function() {
-        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.id);
+        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.$id);
         FirebaseService.remove($scope.persons, person).then(function() {
             $state.go('team');
         });
     };
 
     $scope.deactivatePerson = function(active) {
-        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.id);
+        var person = FirebaseService.getRecord($scope.persons, $scope.personToUpdate.$id);
         person.active = !active;
         FirebaseService.save($scope.persons, person)
             .then(function() {
@@ -68,7 +59,9 @@ angular.module('stairmaster.team.team-controller', [])
     };
 
     $scope.viewPerson = function(id) {
-        $scope.personInfo = FirebaseService.getRecord($scope.persons, id);
+        var person = FirebaseService.getRecord($scope.persons, id);
+        $scope.personInfo = angular.copy(person);
+        $scope.personToUpdate = angular.copy(person);
     };
 
     $scope.getPairingDays = function(id) {

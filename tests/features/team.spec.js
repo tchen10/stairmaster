@@ -100,30 +100,6 @@ describe('stairmaster.team module', function() {
 
         });
 
-        describe('.editPerson', function() {
-            var person;
-
-            beforeEach(function() {
-                person = {
-                    $id: 'personId',
-                    first: 'Michael',
-                    last: 'Scott',
-                    active: true
-                };
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(person);
-            });
-
-            it('should get person to edit', function() {
-                scope.editPerson();
-
-                expect(scope.personToUpdate.id).toBe('personId');
-                expect(scope.personToUpdate.first).toBe('Michael');
-                expect(scope.personToUpdate.last).toBe('Scott');
-                expect(scope.personToUpdate.active).toBe(true);
-            });
-
-        });
-
         describe('.updatePerson', function() {
             var person, deferred;
 
@@ -159,7 +135,7 @@ describe('stairmaster.team module', function() {
             });
 
             it('should redirect to team', function() {
-                expect(state.go).toHaveBeenCalledWith('team');
+                expect(state.go).toHaveBeenCalledWith('team.info');
             });
 
         });
@@ -240,7 +216,7 @@ describe('stairmaster.team module', function() {
                 scope.$apply();
 
                 expect(PairsServiceMock.updatePairStatus).toHaveBeenCalledWith(true, person);
-                expect(state.go).toHaveBeenCalledWith('team');
+                expect(scope.personToUpdate.active).toBe(false);
             });
 
         });

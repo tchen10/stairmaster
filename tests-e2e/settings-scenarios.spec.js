@@ -35,15 +35,17 @@ describe('settings scenarios', function() {
                 expect(pairsList.count()).toEqual(0);
 
                 // cancel edit
-                var editButton = element.all(by.css('[ui-sref="team.editPerson"]')).first();
-                browser.executeScript("arguments[0].click();", editButton.getWebElement());
+                var viewPerson = element.all(by.css('.person-link')).first();
+                var editButton = element(by.id('editingButton'));
+                viewPerson.click();
+                editButton.click();
                 element(by.model('personToUpdate.first')).clear().sendKeys('Aaron');
                 element(by.model('personToUpdate.last')).clear().sendKeys('Burr');
                 element(by.id('cancelEditPersonButton')).click();
                 expect(person.getText()).toEqual('Alexander Hamilton');
 
                 // update
-                browser.executeScript("arguments[0].click();", editButton.getWebElement());
+                editButton.click();
                 element(by.model('personToUpdate.first')).clear().sendKeys('Aaron');
                 element(by.model('personToUpdate.last')).clear().sendKeys('Burr');
                 element(by.id('editPersonButton')).click();
@@ -58,7 +60,8 @@ describe('settings scenarios', function() {
                 expect(pairsList.count()).toEqual(1);
 
                 //delete
-                browser.executeScript("arguments[0].click();", editButton.getWebElement());
+                viewPerson.click();
+                editButton.click();
                 element(by.id('confirmDelete')).click();
                 element(by.id('deletePerson')).click();
                 expect(personList.count()).toEqual(1);
@@ -78,8 +81,8 @@ describe('settings scenarios', function() {
                 var inactivePairsList = element.all(by.css('.pairs-list.inactive > li'));
                 helper.sleep();
 
-                var editButton = element.all(by.css('[ui-sref="team.editPerson"]')).first();
-                browser.executeScript("arguments[0].click();", editButton.getWebElement());
+                element.all(by.css('.person-link')).first().click();
+                element(by.id('editingButton')).click();
 
                 // deactivate
                 var deactivateButton = element(by.id('deactivatePerson'));
