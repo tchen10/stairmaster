@@ -281,8 +281,8 @@ describe('stairmaster.pairs module', function() {
             it('should return true when pair is unique', function() {
                 var pairs = {
                     'pair1': {
-                        person1: { id: 'person1Id' },
-                        person2: { id: 'person2Id' }
+                        person1: 'person1Id',
+                        person2: 'person2Id'
                     }
                 };
 
@@ -294,8 +294,8 @@ describe('stairmaster.pairs module', function() {
             it('should return false when a pair is duplicated', function() {
                 var pairs = {
                     'pair1': {
-                        person1: { id: 'person1Id' },
-                        person2: { id: 'person2Id' }
+                        person1: 'person1Id',
+                        person2: 'person2Id'
                     }
                 };
 

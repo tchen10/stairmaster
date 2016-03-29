@@ -82,8 +82,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var isUnique = true;
 
             angular.forEach(pairs, function(pair) {
-                if (pair.person1.id === person1Id &&
-                    pair.person2.id === person2Id) {
+                if (pair.person1 === person1Id &&
+                    pair.person2 === person2Id) {
                     isUnique = false;
                 }
             });
