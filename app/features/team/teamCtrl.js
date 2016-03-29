@@ -14,4 +14,9 @@ angular.module('stairmaster.team.team-controller', [])
         $scope.personToUpdate = angular.copy(person);
     };
 
+    $scope.getPersonName = function(id) {
+        var person = FirebaseService.getRecord($scope.persons, id);
+        return person.first;
+    };
+
 }]);

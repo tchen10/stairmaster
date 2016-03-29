@@ -215,54 +215,43 @@ describe('stairmaster.persons module', function() {
 
         });
 
-        describe('.getPairingDays', function() {
-            var id, pairs, days;
+        describe('.getPair', function() {
+            var id, pairs, pair;
 
             beforeEach(function() {
                 id = 'pairId';
 
                 spyOn(FirebaseServiceMock, 'getRecord').and.returnValue({
-                    days: 4
+                    pair: 4
                 });
 
-                days = scope.getPairingDays(id);
+                pair = scope.getPair(id);
                 scope.$apply();
             });
 
             it('should get record from FirebaseService', function() {
+                expect(pair).toEqual({
+                    pair: 4
+                });
                 expect(FirebaseServiceMock.getRecord).toHaveBeenCalled();
-            });
-
-            it('should return pairing days', function() {
-                expect(days).toBe(4);
             });
         });
 
-        describe('.getPairStatus', function() {
-            var id = 'pairId';
+        describe('.getPersonName', function() {
+            var id, person;
 
-            it('should return Active when active is true', function() {
+            it('should get the person same', function() {
+                id = 'personId';
+                person = {
+                    first: 'Missy',
+                    last: 'Elliot'
+                };
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(person);
 
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue({
-                    active: true
-                });
-
-                var status = scope.getPairStatus(id);
-
+                var name = scope.getPersonName(id);
                 scope.$apply();
-                expect(status).toBe('Active');
-            });
 
-            it('should return Active when active is true', function() {
-
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue({
-                    active: false
-                });
-
-                var status = scope.getPairStatus(id);
-
-                scope.$apply();
-                expect(status).toBe('Inactive');
+                expect(name).toBe('Missy');
             });
         });
     });

@@ -19,11 +19,11 @@
                 <th>Days</th>
                 <th>Status</th>
             </thead>
-            <tr ng-repeat="(key, value) in personInfo.pairs">
-                <td> {{ value.person1.person.first }} + {{ value.person2.person.first }}
+            <tr ng-repeat="(key, value) in personInfo.pairs" ng-init="pair = getPair(key)">
+                <td> {{ getPersonName(value.person1) }} + {{ getPersonName(value.person2)  }}
                 </td>
-                <td> {{ getPairingDays(key) }} </td>
-                <td> {{ getPairStatus(key) }} </td>
+                <td> {{ pair.days }} </td>
+                <td> {{ pair.active ? "Active" : "Inactive" }} </td>
             </tr>
         </table>
     </div>

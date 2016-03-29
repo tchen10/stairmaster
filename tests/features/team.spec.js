@@ -34,7 +34,7 @@ describe('stairmaster.team module', function() {
             var id, person;
 
             beforeEach(function() {
-                scope.persons = [1,2,3];
+                scope.persons = [1, 2, 3];
                 id = 'personId';
                 person = {
                     first: 'Missy',
@@ -47,7 +47,7 @@ describe('stairmaster.team module', function() {
             });
 
             it('should get record from Firebase', function() {
-                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([ 1, 2, 3 ], 'personId');
+                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([1, 2, 3], 'personId');
             });
 
             it('should set scope of personInfo', function() {
@@ -58,6 +58,26 @@ describe('stairmaster.team module', function() {
                 expect(scope.personToUpdate).toEqual(person);
             });
 
+        });
+
+        describe('.getPersonName', function() {
+            var id, person;
+
+            it('should get the person same', function() {
+                scope.persons = [1, 2, 3];
+                id = 'personId';
+                person = {
+                    first: 'Missy',
+                    last: 'Elliot'
+                };
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(person);
+
+                var name = scope.getPersonName(id);
+                scope.$apply();
+
+                expect(name).toBe('Missy');
+                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([ 1, 2, 3 ], 'personId');
+            });
         });
 
     });

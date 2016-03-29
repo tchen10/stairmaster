@@ -18,12 +18,12 @@
     <div class="well">
         <ul class="pairs-list active">
             <li ng-repeat="pair in pairs | orderBy: '-person1.id': true | filter: { active: true }" class="pair">
-                {{ pair.person1.person.first }} + {{ pair.person2.person.first }}
+                {{ getPersonName(pair.person1) }} + {{ getPersonName(pair.person2) }}
             </li>
         </ul>
         <ul class="pairs-list inactive">
             <li ng-repeat="pair in pairs | orderBy: '-person1.id': true | filter: { active: false }" class="pair">
-                {{ pair.person1.person.first }} + {{ pair.person2.person.first }}
+                {{ getPersonName(pair.person1) }} + {{ getPersonName(pair.person2) }}
             </li>
         </ul>
     </div>

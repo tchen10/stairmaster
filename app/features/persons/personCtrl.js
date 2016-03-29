@@ -57,14 +57,14 @@ angular.module('stairmaster.persons.persons-controller', [])
             });
     };
 
-    $scope.getPairingDays = function(id) {
-        var pair = FirebaseService.getRecord(pairs, id);
-        return pair.days;
+    $scope.getPersonName = function(id) {
+        var person = FirebaseService.getRecord($scope.persons, id);
+        return person.first;
     };
 
-    $scope.getPairStatus = function(id) {
+    $scope.getPair = function(id) {
         var pair = FirebaseService.getRecord(pairs, id);
-        return pair.active ? 'Active' : 'Inactive';
+        return pair;
     };
 
 }]);
