@@ -103,4 +103,44 @@ describe('settings scenarios', function() {
             });
         });
     });
+
+    describe('| display information', function() {
+
+        beforeEach(function() {
+            helper.loadData(testTeamName, seed.data);
+            browser.get('index.html#' + testTeamName + '/settings');
+            helper.sleep();
+        });
+
+        afterEach(function() {
+            var personsRef = helper.getFirebase('Teams/' + testTeamName).child('Persons');
+            var pairsRef = helper.getFirebase('Teams/' + testTeamName).child('Pairs');
+            helper.clearFirebaseRef(personsRef);
+            helper.clearFirebaseRef(pairsRef);
+        });
+
+        it('should display person & pairinformation', function() {
+            var viewPerson = element.all(by.css('.person-link')).first();
+            viewPerson.click();
+
+            expect(element(by.id('personName')).getText()).toEqual('Bugs Bunny');
+
+            viewPerson = element.all(by.css('.person-link')).last();
+            viewPerson.click();
+
+            expect(element(by.id('personName')).getText()).toEqual('Daffy Duck');
+
+            var viewPair = element.all(by.css('.pair-link')).first();
+            viewPair.click();
+
+            expect(element(by.id('pairPerson1')).getText()).toEqual('Elmer Fudd');
+            expect(element(by.id('pairPerson2')).getText()).toEqual('Daffy Duck');
+
+            viewPair = element.all(by.css('.pair-link')).last();
+            viewPair.click();
+
+            expect(element(by.id('pairPerson1')).getText()).toEqual('Bugs Bunny');
+            expect(element(by.id('pairPerson2')).getText()).toEqual('Elmer Fudd');
+        });
+    });
 });
