@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('stairmaster.team.team-service', [])
+angular.module('stairmaster.persons.persons-service', [])
 
-.service('TeamService', [function() {
+.service('PersonService', [function() {
 
     return {
         validateName: function(name) {
