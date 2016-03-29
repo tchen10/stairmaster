@@ -47,16 +47,16 @@ app.config(['$stateProvider', '$urlRouterProvider',
                     }
                 }
             })
-            .state('team.addPerson', {
-                url: '/add',
-                templateUrl: 'features/persons/_addPerson.html',
-                controller: 'PersonCtrl'
-            })
-            .state('team.info', {
-                url: '/info',
-                templateUrl: 'features/persons/_infoPerson.html',
-                controller: 'PersonCtrl'
-            })
+            // .state('team.addPerson', {
+            //     url: '/add',
+            //     templateUrl: 'features/persons/_addPerson.html',
+            //     controller: 'PersonCtrl'
+            // })
+            // .state('team.info', {
+            //     url: '/info',
+            //     templateUrl: 'features/persons/_infoPerson.html',
+            //     controller: 'PersonCtrl'
+            // })
             .state('pairstairs', {
                 url: '/pairstairs',
                 parent: 'common',
