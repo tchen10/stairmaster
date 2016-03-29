@@ -126,8 +126,8 @@ describe('stairmaster.pairs module', function() {
                 person = {
                     pairs: {
                         pairkey: {
-                            person1: person1,
-                            person2: person2
+                            person1: 'person1Id',
+                            person2: 'person2Id'
                         }
                     }
                 };

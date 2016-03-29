@@ -38,8 +38,8 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             angular.forEach(pairsToUpdate, function(pair, key) {
                 var pairToUpdate = FirebaseService.getRecord(pairs, key);
                 if (!active) {
-                    var person1 = FirebaseService.getRecord(persons, pair.person1.id);
-                    var person2 = FirebaseService.getRecord(persons, pair.person2.id);
+                    var person1 = FirebaseService.getRecord(persons, pair.person1);
+                    var person2 = FirebaseService.getRecord(persons, pair.person2);
                     pairToUpdate.active = that._setPairStatus(person1, person2);
                 } else {
                     pairToUpdate.active = false;
