@@ -30,10 +30,19 @@ describe('stairmaster.stairs.module', function() {
                         'person2': 'jimId'
                     },
                     'pair2Id': {
+                        'Days': {
+                            'day2Id' : true,
+                            'day3Id' : true
+                        },
                         'person1': 'michaelId',
                         'person2': 'pamId'
                     },
                     'pair3Id': {
+                        'Days': {
+                            'day4Id' : true,
+                            'day5Id' : true,
+                            'day6Id' : true
+                        },
                         'person1': 'jimId',
                         'person2': 'pamId'
                     }
@@ -92,14 +101,23 @@ describe('stairmaster.stairs.module', function() {
                     rows: {
                         row0: {
                             pairs: {
-                                pair0: { id: 'pair1Id' },
-                                pair1: { id: 'pair2Id' }
+                                pair0: {
+                                    id: 'pair1Id',
+                                    dayCount: 0
+                                },
+                                pair1: {
+                                    id: 'pair2Id',
+                                    dayCount: 2
+                                }
                             },
                             name: 'Michael'
                         },
                         row1: {
                             pairs: {
-                                pair0: { id: 'pair3Id' }
+                                pair0: {
+                                    id: 'pair3Id',
+                                    dayCount: 3
+                                }
                             },
                             name: 'Jim'
                         },

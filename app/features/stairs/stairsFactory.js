@@ -8,6 +8,7 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
 
     return {
         generateStairs: function(persons, pairs) {
+            var that = this;
             var timestamp = FirebaseService.getTimestamp();
             var stairs = {
                 rows: {},
@@ -29,7 +30,11 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
                         row.name = person.first;
                         var pairIdentifier = 'pair' + pairNumber;
                         if (pair.person1 === personId) {
-                            row.pairs[pairIdentifier] = { id: pairId };
+                            var dayCount = that._setDayCount(pair.Days);
+                            row.pairs[pairIdentifier] = {
+                                id: pairId,
+                                dayCount: dayCount
+                            };
                             pairNumber++;
                             delete pairs[pair];
                         }
@@ -39,6 +44,14 @@ angular.module('stairmaster.stairs.stairs-factory', [require('angularfire')])
             });
 
             return stairs;
+        },
+
+        _setDayCount: function(days) {
+            if (days) {
+                return Object.keys(days).length;
+            } else {
+                return 0;
+            }
         }
     };
 
