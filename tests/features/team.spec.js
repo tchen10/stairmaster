@@ -60,6 +60,36 @@ describe('stairmaster.team module', function() {
 
         });
 
+        describe('.viewPair', function() {
+            var id, pair, days;
+
+            beforeEach(function() {
+                scope.pairs = [1, 2, 3];
+                id = 'pairId';
+                pair = { $id: id };
+                days = { $id: 'dayId'};
+
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebaseArray').and.returnValue(days);
+
+                scope.viewPair(id);
+                scope.$apply();
+            });
+
+            it('should get record from Firebase', function() {
+                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith(scope.pairs, id);
+            });
+
+            it('should get days array from Firebase', function() {
+                expect(FirebaseServiceMock.getPerTeamFirebaseArray).toHaveBeenCalledWith('Pairs/pairId/Days');
+            });
+
+            it('should set scope of pairHistory and pairingDays', function() {
+                expect(scope.pairHistory).toEqual(pair);
+                expect(scope.pairingDays).toEqual(days);
+            });
+        });
+
         describe('.getPersonName', function() {
             var id, person;
 
@@ -76,7 +106,7 @@ describe('stairmaster.team module', function() {
                 scope.$apply();
 
                 expect(name).toBe('Missy');
-                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([ 1, 2, 3 ], 'personId');
+                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([1, 2, 3], 'personId');
             });
         });
 

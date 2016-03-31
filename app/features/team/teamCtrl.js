@@ -16,7 +16,9 @@ angular.module('stairmaster.team.team-controller', [])
 
     $scope.viewPair = function(id) {
         var pair = FirebaseService.getRecord($scope.pairs, id);
+        var days = FirebaseService.getPerTeamFirebaseArray('Pairs/' + id + '/Days');
         $scope.pairHistory = angular.copy(pair);
+        $scope.pairingDays = days;
     };
 
     $scope.getPersonName = function(id) {

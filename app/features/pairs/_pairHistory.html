@@ -1,15 +1,20 @@
 <h3>Pair History</h3>
 <div class="well">
     <div>
-        <h4 id="pairPerson1">{{ getPerson(pairHistory.person1).first }} {{ getPerson(pairHistory.person1).last }}</h4>
+        <h4 id="pairNames">{{ getPersonName(pairHistory.person1) }} + {{ getPersonName(pairHistory.person2) }}</h4>
     </div>
     <div>
-        <h4 id="pairPerson2">{{ getPerson(pairHistory.person2).first }} {{ getPerson(pairHistory.person2).last }}</h4>
+        <b>Status:</b> {{ pairHistory.active ? "Active" : "Inactive" }}
     </div>
     <div>
-        Status: {{ pairHistory.active ? "Active" : "Inactive" }}
+        <b>Total Number of Days:</b> {{ pairingDays.length }}
     </div>
-    <div>
-        Days: {{ pairHistory.days }}
-    </div>
+    <table ng-show="pairingDays.length > 0" class="table">
+        <thead>
+            <th>Date</th>
+        </thead>
+        <tr ng-repeat="(daykey, day) in pairingDays">
+            <td>{{ day.timestamp | date: 'mediumDate' }}</td>
+        </tr>
+    </table>
 </div>

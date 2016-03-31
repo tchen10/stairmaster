@@ -133,14 +133,14 @@ describe('settings scenarios', function() {
             var viewPair = element.all(by.css('.pair-link')).first();
             viewPair.click();
 
-            expect(element(by.id('pairPerson1')).getText()).toEqual('Elmer Fudd');
-            expect(element(by.id('pairPerson2')).getText()).toEqual('Daffy Duck');
+            var pairNames = element(by.id('pairNames'));
+
+            expect(pairNames.getText()).toEqual('Elmer Fudd + Daffy Duck');
 
             viewPair = element.all(by.css('.pair-link')).last();
             viewPair.click();
 
-            expect(element(by.id('pairPerson1')).getText()).toEqual('Bugs Bunny');
-            expect(element(by.id('pairPerson2')).getText()).toEqual('Elmer Fudd');
+            expect(pairNames.getText()).toEqual('Bugs Bunny + Elmer Fudd');
         });
     });
 });

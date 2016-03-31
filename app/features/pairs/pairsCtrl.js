@@ -44,9 +44,9 @@ angular.module('stairmaster.pairs.pairs-controller', [])
         }
     };
 
-    $scope.getPerson = function(id) {
+    $scope.getPersonName = function(id) {
         var person = FirebaseService.getRecord(persons, id);
-        return person;
+        return person.first + ' ' + person.last;
     };
 }])
 

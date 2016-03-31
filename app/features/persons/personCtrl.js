@@ -67,4 +67,8 @@ angular.module('stairmaster.persons.persons-controller', [])
         return pair;
     };
 
+    $scope.getPairingDays = function(days) {
+        return days ? Object.keys(days).length : 0;
+    };
+
 }]);

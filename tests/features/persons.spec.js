@@ -254,6 +254,22 @@ describe('stairmaster.persons module', function() {
                 expect(name).toBe('Missy');
             });
         });
+
+        describe('.getPairingDays', function() {
+            it('should return 0 if days is undefined', function() {
+                var count = scope.getPairingDays();
+                expect(count).toBe(0);
+            });
+
+            it('should return length of Days object', function() {
+                var days = {
+                    'day1Id': true,
+                    'day2Id': true
+                };
+                var count = scope.getPairingDays(days);
+                expect(count).toBe(2);
+            });
+        });
     });
 
     describe('person service', function() {

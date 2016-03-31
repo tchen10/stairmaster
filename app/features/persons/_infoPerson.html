@@ -22,7 +22,7 @@
             <tr ng-repeat="(key, value) in personInfo.pairs" ng-init="pair = getPair(key)">
                 <td> {{ getPersonName(value.person1) }} + {{ getPersonName(value.person2)  }}
                 </td>
-                <td> {{ pair.days }} </td>
+                <td> {{ getPairingDays(pair.Days) }} </td>
                 <td> {{ pair.active ? "Active" : "Inactive" }} </td>
             </tr>
         </table>
