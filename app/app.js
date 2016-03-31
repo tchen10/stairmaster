@@ -47,21 +47,16 @@ app.config(['$stateProvider', '$urlRouterProvider',
                     }
                 }
             })
-            // .state('team.addPerson', {
-            //     url: '/add',
-            //     templateUrl: 'features/persons/_addPerson.html',
-            //     controller: 'PersonCtrl'
-            // })
-            // .state('team.info', {
-            //     url: '/info',
-            //     templateUrl: 'features/persons/_infoPerson.html',
-            //     controller: 'PersonCtrl'
-            // })
             .state('pairstairs', {
                 url: '/pairstairs',
                 parent: 'common',
                 templateUrl: 'features/pairs/pairs.html',
-                controller: 'PairsCtrl'
+                controller: 'PairsCtrl',
+                resolve: {
+                    teamId: function(FirebaseService, $stateParams) {
+                        return FirebaseService.setTeamId($stateParams.teamId);
+                    }
+                }
             })
             .state('login', {
                 url: '/welcome',
