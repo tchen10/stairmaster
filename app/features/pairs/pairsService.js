@@ -71,7 +71,7 @@ angular.module('stairmaster.pairs.pairs-service', [require('angularfire')])
             var pair = {
                 person1: person1Id,
                 person2: person2Id,
-                days: 0,
+                dayCount: 0,
                 active: active
             };
 

@@ -2,10 +2,10 @@
 <table id="stairs" class="stair-table">
     <tbody>
         <tr class="stair-row" ng-repeat="row in stairs.rows | reverse">
-            <td class="stair-pair" ng-repeat="pair in row.pairs | reverse">
-                <span class="increment-days change-days-icon glyphicon glyphicon glyphicon-plus" ng-click="incrementDays(pair.id)"></span>
-                <span class="pairing-days">{{ getPairingDays(pair.id) }}</span>
-                <span class="decrement-days change-days-icon glyphicon glyphicon glyphicon-minus" ng-click="decrementDays(pair.id)"></span>
+            <td class="stair-pair" ng-repeat="pair in row.pairs | reverse" ng-init="count = pair.dayCount">
+                <span class="increment-days change-days-icon glyphicon glyphicon glyphicon-plus" ng-click="incrementDays(pair.id); count = incrementDayCount(count)"></span>
+                <span class="pairing-days">{{ count }}</span>
+                <span class="decrement-days change-days-icon glyphicon glyphicon glyphicon-minus" ng-click="decrementDays(pair.id, count); count = decrementDayCount(count);"></span>
             </td>
             <td class="stair-name">{{ row.name }}</td>
         </tr>

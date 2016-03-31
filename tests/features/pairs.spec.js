@@ -18,16 +18,21 @@ describe('stairmaster.pairs module', function() {
                     return [];
                 },
                 getRecord: function() {},
-                save: function() {}
+                add: function() {},
+                remove: function() {},
+                getTimestamp: function() {
+                    return 'timestamp';
+                },
+                loaded: function() {}
             };
 
             FirebaseRestServiceMock = {
                 getActivePersons: function() {
-                    deferred.resolve();
+                    deferred.resolve({});
                     return deferred.promise;
                 },
                 getActivePairs: function() {
-                    deferred.resolve();
+                    deferred.resolve({});
                     return deferred.promise;
                 }
             };
@@ -45,44 +50,90 @@ describe('stairmaster.pairs module', function() {
         });
 
         describe('.incrementDays', function() {
+            var days, id;
 
-            it('should increment days', function() {
-                var pair = { days: 3 };
-                var id = 12;
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
-                spyOn(FirebaseServiceMock, 'save');
+            beforeEach(function() {
+                id = 12;
+                days = [1, 2, 3];
+
+            });
+
+
+            it('should call firebasearray with correct path', function() {
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebaseArray');
+                scope.incrementDays(id);
+                expect(FirebaseServiceMock.getPerTeamFirebaseArray).toHaveBeenCalledWith('Pairs/12/Days');
+            });
+
+            it('should add new day to days array', function() {
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebaseArray').and.returnValue(days);
+                spyOn(FirebaseServiceMock, 'add');
+
+                var day = {
+                    timestamp: 'timestamp'
+                };
 
                 scope.incrementDays(id);
 
-                expect(pair.days).toBe(4);
-                expect(FirebaseServiceMock.save).toHaveBeenCalledWith(scope.pairs, pair);
+                expect(FirebaseServiceMock.add).toHaveBeenCalledWith(days, day);
             });
 
         });
 
         describe('.decrementDays', function() {
+            var days, id;
+
+            beforeEach(function() {
+                id = 12;
+                days = [4, 5, 6];
+
+                inject(function($q) {
+                    deferred = $q.defer();
+                });
+
+                spyOn(FirebaseServiceMock, 'loaded').and.callFake(function() {
+                    deferred.resolve(days);
+                    return deferred.promise;
+                });
+            });
+
+            it('should call firebasearray with correct path', function() {
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebaseArray');
+                scope.decrementDays(id, 2);
+                expect(FirebaseServiceMock.getPerTeamFirebaseArray).toHaveBeenCalledWith('Pairs/12/Days');
+            });
 
             it('should decrement days when days are greater than 0', function() {
-                var pair = { days: 3 };
-                var id = 12;
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
-                spyOn(FirebaseServiceMock, 'save');
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebaseArray').and.returnValue(days);
+                spyOn(FirebaseServiceMock, 'remove');
 
-                scope.decrementDays(id);
+                scope.decrementDays(id, 2);
+                scope.$apply();
 
-                expect(pair.days).toBe(2);
-                expect(FirebaseServiceMock.save).toHaveBeenCalledWith(scope.pairs, pair);
+                expect(FirebaseServiceMock.remove).toHaveBeenCalledWith(days, 5);
             });
 
             it('should keep days at 0 when there are 0 days', function() {
-                var pair = { days: 0 };
-                var id = 12;
-                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue(pair);
-                spyOn(FirebaseServiceMock, 'save');
 
-                scope.decrementDays(id);
+            });
+        });
 
-                expect(pair.days).toBe(0);
+        describe('.incrementDayCount', function() {
+            it('should increment count', function() {
+                var count = scope.incrementDayCount(3);
+                expect(count).toBe(4);
+            });
+        });
+
+        describe('.decrementDayCount', function() {
+            it('should return 0 if count is 0', function() {
+                var count = scope.decrementDayCount(0);
+                expect(count).toBe(0);
+            });
+
+            it('should decrement count', function() {
+                var count = scope.decrementDayCount(10);
+                expect(count).toBe(9);
             });
         });
 
@@ -270,7 +321,7 @@ describe('stairmaster.pairs module', function() {
                 expect(firebaseServiceMock.add).toHaveBeenCalledWith(pairs, {
                     person1: 'monkey',
                     person2: 'tiger',
-                    days: 0,
+                    dayCount: 0,
                     active: true
                 });
 

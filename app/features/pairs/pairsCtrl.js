@@ -1,10 +1,8 @@
 'use strict';
 
-var Firebase = require('firebase');
+angular.module('stairmaster.pairs.pairs-controller', [])
 
-angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
-
-.controller('PairsCtrl', ['$scope', '$firebaseArray', 'FirebaseService', 'FirebaseRestService', 'StairsFactory', function($scope, $firebaseArray, FirebaseService, FirebaseRestService, StairsFactory) {
+.controller('PairsCtrl', ['$scope', 'FirebaseService', 'FirebaseRestService', 'StairsFactory', function($scope, FirebaseService, FirebaseRestService, StairsFactory) {
     var persons = FirebaseService.getPerTeamFirebaseArray('Persons');
     var pairs = FirebaseService.getPerTeamFirebaseArray('Pairs');
 
@@ -17,22 +15,33 @@ angular.module('stairmaster.pairs.pairs-controller', [require('angularfire')])
     });
 
     $scope.incrementDays = function(id) {
-        var pair = FirebaseService.getRecord(pairs, id);
-        pair.days += 1;
-        FirebaseService.save(pairs, pair);
+        var days = FirebaseService.getPerTeamFirebaseArray('Pairs/' + id + '/Days');
+        var day = {
+            timestamp: FirebaseService.getTimestamp()
+        };
+        FirebaseService.add(days, day);
     };
 
-    $scope.decrementDays = function(id) {
-        var pair = FirebaseService.getRecord(pairs, id);
-        if (pair.days !== 0) {
-            pair.days -= 1;
-            FirebaseService.save(pairs, pair);
+    $scope.incrementDayCount = function(count) {
+        return count + 1;
+    };
+
+    $scope.decrementDays = function(id, count) {
+        if (count > 0) {
+            var days = FirebaseService.getPerTeamFirebaseArray('Pairs/' + id + '/Days');
+            FirebaseService.loaded(days).then(function(days) {
+                var day = days[count - 1];
+                FirebaseService.remove(days, day);
+            });
         }
     };
 
-    $scope.getPairingDays = function(id) {
-        var pair = FirebaseService.getRecord(pairs, id);
-        return pair.days;
+    $scope.decrementDayCount = function(count) {
+        if (count > 0) {
+            return count - 1;
+        } else {
+            return count;
+        }
     };
 
     $scope.getPerson = function(id) {
