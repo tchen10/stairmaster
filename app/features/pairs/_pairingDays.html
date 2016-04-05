@@ -1,0 +1,8 @@
+<table class="table">
+    <thead>
+        <th>Date</th>
+    </thead>
+    <tr ng-repeat="(daykey, day) in pairingDays">
+        <td>{{ day.timestamp | date: 'mediumDate' }}</td>
+    </tr>
+</table>

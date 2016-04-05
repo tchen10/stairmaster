@@ -25,7 +25,7 @@
         </ul>
         <ul class="pairs-list inactive">
             <li ng-repeat="pair in pairs | orderBy: '-person1.id': true | filter: { active: false }" class="pair">
-                 <span class="pair-link" ui-sref="team.pairHistory" ng-click="viewPair(pair.$id)">
+                <span class="pair-link" ui-sref="team.pairHistory" ng-click="viewPair(pair.$id)">
                     {{ getPersonName(pair.person1) }} + {{ getPersonName(pair.person2) }}
                 </span>
             </li>

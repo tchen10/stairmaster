@@ -1,0 +1,12 @@
+<table class="table">
+    <thead>
+        <th>Date</th>
+        <th></th>
+    </thead>
+    <tr ng-repeat="(daykey, day) in pairingDays">
+        <td>{{ day.timestamp | date: 'mediumDate' }}</td>
+        <td>
+            <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteDay(pairHistory.$id, day.$id)"></span>
+        </td>
+    </tr>
+</table>

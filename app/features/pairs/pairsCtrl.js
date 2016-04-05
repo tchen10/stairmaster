@@ -48,6 +48,12 @@ angular.module('stairmaster.pairs.pairs-controller', [])
         var person = FirebaseService.getRecord(persons, id);
         return person.first + ' ' + person.last;
     };
+
+    $scope.deleteDay = function(pairId, dayId) {
+        var ref = FirebaseService.getPerTeamFirebase('Pairs').child(pairId)
+            .child('Days').child(dayId);
+        ref.remove();
+    };
 }])
 
 .filter('reverse', function() {
