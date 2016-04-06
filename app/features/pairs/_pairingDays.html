@@ -4,7 +4,7 @@
         <th>Note</th>
     </thead>
     <tr ng-repeat="(daykey, day) in pairingDays">
-        <td>{{ day.date }}</td>
-        <td>{{ day.note }}</td>
+        <td id="day{{daykey}}-date">{{ day.date }}</td>
+        <td id="day{{daykey}}-note">{{ day.note }}</td>
     </tr>
 </table>

@@ -4,9 +4,12 @@ var helper = require('./helpers/testHelper.js');
 var seed = require('./helpers/seed.js');
 
 describe('settings scenarios', function() {
+    var testTeamName;
 
-    var testTeamName = 'settingsScenario' + Date.now();
-    var firebaseRef = helper.createTeam(testTeamName);
+    beforeEach(function() {
+        testTeamName = 'settingsScenario' + Date.now();
+        var firebaseRef = helper.createTeam(testTeamName);
+    });
 
     afterEach(function() {
         var ref = helper.getFirebase('Teams/' + testTeamName);
@@ -134,13 +137,59 @@ describe('settings scenarios', function() {
             viewPair.click();
 
             var pairNames = element(by.id('pairNames'));
+            var pairStatus = element(by.id('pairStatus'));
+            var pairingDays = element(by.id('pairingDays'));
 
             expect(pairNames.getText()).toEqual('Elmer Fudd + Daffy Duck');
+            expect(pairStatus.getText()).toEqual('Active');
+            expect(pairingDays.getText()).toEqual('0');
 
             viewPair = element.all(by.css('.pair-link')).last();
             viewPair.click();
 
             expect(pairNames.getText()).toEqual('Bugs Bunny + Elmer Fudd');
+            expect(pairStatus.getText()).toEqual('Active');
+            expect(pairingDays.getText()).toEqual('2');
         });
+    });
+
+    describe('| pair history mangement', function() {
+
+        beforeEach(function() {
+            helper.loadData(testTeamName, seed.data);
+            browser.get('index.html#' + testTeamName + '/settings');
+            helper.sleep();
+        });
+
+        afterEach(function() {
+            var personsRef = helper.getFirebase('Teams/' + testTeamName).child('Persons');
+            var pairsRef = helper.getFirebase('Teams/' + testTeamName).child('Pairs');
+            helper.clearFirebaseRef(personsRef);
+            helper.clearFirebaseRef(pairsRef);
+        });
+
+        it('should edit and delete pairing days', function() {
+            var viewPair = element.all(by.css('.pair-link')).last();
+            var editingButton = element(by.id('editingButton'));
+
+            viewPair.click();
+            editingButton.click();
+
+            element.all(by.model('day.date')).first().clear().sendKeys('May 16, 2016');
+            element.all(by.model('day.note')).first().clear().sendKeys('Noted');
+            element(by.id('day1-delete')).click();
+
+            var cancelEditingButton = element(by.id('cancelEditPersonButton'));
+            cancelEditingButton.click();
+
+            var day0date = element.all(by.id('day0-date')).first();
+            var day0note = element.all(by.id('day0-note')).first();
+            var pairingDays = element(by.id('pairingDays'));
+
+            expect(day0date.getText()).toEqual('May 16, 2016');
+            expect(day0note.getText()).toEqual('Noted');
+            expect(pairingDays.getText()).toEqual('1');
+        });
+
     });
 });

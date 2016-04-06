@@ -4,10 +4,10 @@
         <h4 id="pairNames">{{ getPersonName(pairHistory.person1) }} + {{ getPersonName(pairHistory.person2) }}</h4>
     </div>
     <div>
-        <b>Status:</b> {{ pairHistory.active ? "Active" : "Inactive" }}
+        <b>Status:</b> <span id="pairStatus">{{ pairHistory.active ? "Active" : "Inactive" }}</span>
     </div>
     <div>
-        <b>Total Number of Days:</b> {{ pairingDays.length }}
+        <b>Total Number of Days:</b> <span id="pairingDays">{{ pairingDays.length }}</span>
     </div>
     <div ng-show="pairingDays.length > 0">
         <div ng-hide="editing" ng-init="editing=false">
