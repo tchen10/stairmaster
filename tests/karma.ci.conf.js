@@ -7,6 +7,7 @@ module.exports = function(config){
 
     files : [
       'dist/bundle.js',
+      'dist/bower_components/moment/min/moment.min.js',
       'tests/**/*.spec.js'
     ],
 

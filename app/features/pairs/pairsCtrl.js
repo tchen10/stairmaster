@@ -51,8 +51,7 @@ angular.module('stairmaster.pairs.pairs-controller', [])
     };
 
     $scope.deleteDay = function(pairId, dayId) {
-        var ref = FirebaseService.getPerTeamFirebase('Pairs').child(pairId)
-            .child('Days').child(dayId);
+        var ref = FirebaseService.getPerTeamFirebase('Pairs/' + pairId + '/Days/' + dayId);
         ref.remove();
     };
 }])

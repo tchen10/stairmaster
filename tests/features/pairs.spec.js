@@ -17,6 +17,7 @@ describe('stairmaster.pairs module', function() {
                 getPerTeamFirebaseArray: function() {
                     return [];
                 },
+                getPerTeamFirebase: function() {},
                 getRecord: function() {},
                 add: function() {},
                 remove: function() {},
@@ -70,6 +71,7 @@ describe('stairmaster.pairs module', function() {
                 spyOn(FirebaseServiceMock, 'add');
 
                 var day = {
+                    date: moment().format('ll'),
                     timestamp: 'timestamp'
                 };
 
@@ -112,10 +114,6 @@ describe('stairmaster.pairs module', function() {
 
                 expect(FirebaseServiceMock.remove).toHaveBeenCalledWith(days, 5);
             });
-
-            it('should keep days at 0 when there are 0 days', function() {
-
-            });
         });
 
         describe('.incrementDayCount', function() {
@@ -134,6 +132,49 @@ describe('stairmaster.pairs module', function() {
             it('should decrement count', function() {
                 var count = scope.decrementDayCount(10);
                 expect(count).toBe(9);
+            });
+        });
+
+        describe('.getPersonName', function() {
+            var id, name;
+
+            beforeEach(function() {
+                id = 12;
+                spyOn(FirebaseServiceMock, 'getRecord').and.returnValue({
+                    first: 'Po',
+                    last: 'Panda'
+                });
+
+                name = scope.getPersonName(id);
+            });
+
+            it('should return a persons first and last name', function() {
+                expect(name).toBe('Po Panda');
+            });
+
+            it('should call firebaseService with correct parameters', function() {
+                expect(FirebaseServiceMock.getRecord).toHaveBeenCalledWith([], id);
+            });
+        });
+
+        describe('.deleteDay', function() {
+            var pairId, dayId;
+
+            it('should remove day', function() {
+                pairId = 'pairId';
+                dayId = 'dayId';
+
+                var refMock = {
+                    remove: function() {}
+                };
+
+                spyOn(FirebaseServiceMock, 'getPerTeamFirebase').and.returnValue(refMock);
+                spyOn(refMock, 'remove');
+
+                scope.deleteDay(pairId, dayId);
+
+                expect(FirebaseServiceMock.getPerTeamFirebase).toHaveBeenCalledWith('Pairs/pairId/Days/dayId');
+                expect(refMock.remove).toHaveBeenCalled();
             });
         });
 
