@@ -12,6 +12,7 @@ require('./components');
 var app = angular.module('stairmaster', [
     'ui.router',
     'stairmaster.version',
+    'stairmaster.datetimepicker',
     'stairmaster.firebase',
     'stairmaster.navigation',
     'stairmaster.team',
