@@ -8,11 +8,13 @@
           },
           "Persons": {
             ".indexOn": "active",
-            "first": {
-              ".validate": "newData.isString() && newData.val().matches(/[A-Za-z]+/)"
-            },
-            "last": {
-              ".validate": "newData.isString() &&newData.val().matches(/[A-Za-z]+/)"
+            "$person_id": {
+              "first": {
+                ".validate": "newData.isString() && newData.val().matches(/[A-Za-z]+/)"
+              },
+              "last": {
+                ".validate": "newData.isString() &&newData.val().matches(/[A-Za-z]+/)"
+              }
             }
           }
         },
