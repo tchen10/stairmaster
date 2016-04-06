@@ -4,7 +4,10 @@
         <th></th>
     </thead>
     <tr ng-repeat="(daykey, day) in pairingDays">
-        <td>{{ day.timestamp | date: 'mediumDate' }}</td>
+        <td>
+            <input type="text" ng-model="day.date" datetimepicker useCurrent="false" />
+            <button id="editPersonButton" type="submit" class="btn btn-primary" ng-click="updateDate(pairHistory.$id, day.$id, day.date)"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+        </td>
         <td>
             <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="deleteDay(pairHistory.$id, day.$id)"></span>
         </td>

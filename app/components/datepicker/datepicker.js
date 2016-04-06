@@ -20,8 +20,7 @@ angular.module('stairmaster.datetimepicker', [])
 
             elem.on('dp.change', function(e) {
                 scope.$apply(function() {
-                    console.log(e.date);
-                    ngModel.$setViewValue(e.date);
+                    ngModel.$setViewValue(moment(e.date).format('ll'));
                 });
             });
         }

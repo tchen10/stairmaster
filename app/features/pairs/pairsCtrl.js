@@ -17,6 +17,7 @@ angular.module('stairmaster.pairs.pairs-controller', [])
     $scope.incrementDays = function(id) {
         var days = FirebaseService.getPerTeamFirebaseArray('Pairs/' + id + '/Days');
         var day = {
+            date: moment().format('ll'),
             timestamp: FirebaseService.getTimestamp()
         };
         FirebaseService.add(days, day);
