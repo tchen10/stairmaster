@@ -22,6 +22,13 @@ describe('settings scenarios', function() {
             browser.get('index.html#' + testTeamName + '/settings');
         });
 
+        afterEach(function() {
+            var personsRef = helper.getFirebase('Teams/' + testTeamName).child('Persons');
+            var pairsRef = helper.getFirebase('Teams/' + testTeamName).child('Pairs');
+            helper.clearFirebaseRef(personsRef);
+            helper.clearFirebaseRef(pairsRef);
+        });
+
         describe('| crud functionality', function() {
             it('should create, update, and delete a person', function() {
                 var personList = element.all(by.css('.person-list.active > li'));

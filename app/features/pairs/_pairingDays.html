@@ -7,4 +7,7 @@
         <td id="day{{daykey}}-date">{{ day.date }}</td>
         <td id="day{{daykey}}-note">{{ day.note }}</td>
     </tr>
+    <tr>
+        <td><span id="addDayButton" class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="incrementDays(pairHistory.$id)"></span></td>
+    </tr>
 </table>
